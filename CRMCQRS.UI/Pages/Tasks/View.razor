@@ -1,0 +1,15 @@
+﻿@page "/tasks/view/{Id:guid?}"
+@using MedOk.Extensions.Identity
+@attribute [Authorize(Roles = UserRoles.Admin)]
+
+<PageTitle>Задачи</PageTitle>
+<MudGrid>
+    <MudItem Class="ma-8" md="8" sm="12" xs="12">
+        <MudPaper>
+            <MudText Typo="Typo.h4">
+                @Model.Title
+                <MudDivider />
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>

@@ -1,0 +1,83 @@
+﻿@using MedOk.Extensions.Enums
+<MudForm Model="@_model" @ref="@_form" Validation="@(_missionModelValidator.ValidateValue)" ValidationDelay="0">
+    <MudDialog>
+        <DialogContent>
+            <MudContainer Class="overflow-scroll" Style="max-height: 500px">
+
+                <MudGrid>
+                    <MudItem md="12" sm="12" xs="12">
+                        <MudTextField @bind-Value="_model.Title" For="@(() => _model.Title)" Immediate="true"/>
+                    </MudItem>
+                    <MudItem md="12" sm="12" xs="12">
+                        <MudTextField @bind-Value="_model.Description" For="@(() => _model.Description)" Immediate="true" Lines="5"/>
+                    </MudItem>
+                    <MudItem md="12" sm="12" xs="12">
+                        <MudTextField @bind-Value="_model.StartDate" For="@(() => _model.StartDate)" Format="yyyy-MM-dd" Immediate="true" InputType="InputType.Date"/>
+                    </MudItem>
+                    <MudItem md="12" sm="12" xs="12">
+                        <MudTextField @bind-Value="_model.EndDate" For="@(() => _model.EndDate)" Format="yyyy-MM-dd" Immediate="true" InputType="InputType.Date"/>
+                    </MudItem>
+                    <MudItem md="12" sm="12" xs="12">
+                        <MudSelect @bind-Value="_model.ResponsibleUserId" For="@(() => _model.ResponsibleUserId)" Variant="Variant.Outlined">
+                            @foreach (var item in _users)
+                            {
+                                <MudSelectItem T="Guid?" Value="Guid.Parse(item.Value)">
+                                    @item.Text
+                                </MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem md="12" sm="12" xs="12">
+                        <MudSelect @bind-Value="_model.ExecutorUserId" For="@(() => _model.ExecutorUserId)" Variant="Variant.Outlined">
+                            @foreach (var item in _users)
+                            {
+                                <MudSelectItem T="Guid?" Value="Guid.Parse(item.Value)">
+                                    @item.Text
+                                </MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem md="12" sm="12" xs="12">
+                        <MudSelect @bind-Value="_model.ProjectId" For="@(() => _model.ProjectId)" Variant="Variant.Outlined">
+                            @foreach (var item in _projects)
+                            {
+                                <MudSelectItem T="Guid?" Value="Guid.Parse(item.Value)">
+                                    @item.Text
+                                </MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem md="12" sm="12" xs="12">
+                        <MudSelect @bind-Value="_model.MissionPriority" For="@(() => _model.MissionPriority)" Variant="Variant.Outlined">
+                            @foreach (var item in _missionPriority)
+                            {
+                                <MudSelectItem Value="item">
+                                    @item.GetDisplayName()
+                                </MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem md="12" sm="12" xs="12">
+                        <MudSelect @bind-SelectedValues="_selectedTags" @bind-Value="_model.TagNames" For="@(() => _model.TagNames)" MultiSelection="true" T="string" Variant="Variant.Outlined">
+                            @foreach (var value in _tags)
+                            {
+                                <MudSelectItem T="string" Value="value.Title">
+                                    <MudChip Class="ma-2" Style="@($"color: {value.Color}")" Variant="@(value.IsFilled ? Variant.Filled : Variant.Outlined)">@value.Title</MudChip>
+                                </MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+
+                    <MudTextField @bind-Value="_model.Id" DisableUnderLine="true" For="@(() => _model.Id)" Immediate="true" InputType="InputType.Hidden" Label="@null"/>
+                    <MudItem Class="d-flex flex-grow-1 gap-4 justify-center" md="12" sm="12" xs="12">
+
+                    </MudItem>
+                </MudGrid>
+            </MudContainer>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Class="ml-auto" Color="Color.Primary" OnClick="@(async () => await Submit())" Variant="Variant.Filled">Сохранить</MudButton>
+            <MudButton OnClick="Cancel">Отмена</MudButton>
+        </DialogActions>
+    </MudDialog>
+</MudForm>

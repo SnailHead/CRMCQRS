@@ -1,0 +1,71 @@
+﻿@page "/users"
+@using MedOk.Extensions.Identity
+@attribute [Authorize(Roles = UserRoles.Admin)]
+
+<MudPaper Elevation="25">
+    <MudToolBar>
+        
+        <MudSpacer/>
+        <MudIconButton Icon="@Icons.Material.Outlined.Add"/>
+    </MudToolBar>
+</MudPaper>
+<PageTitle>Пользователи</PageTitle>
+<MudText Align="Align.Center" Class="m-2" Typo="Typo.h5">Пользователи</MudText>
+<MudItem Class="align-items-end d-flex flex-column m-2">
+    <MudButton Color="Color.Primary" OnClick="OpenDialog" Variant="Variant.Filled">Добавить</MudButton>
+</MudItem>
+
+<MudExpansionPanels>
+    <MudExpansionPanel MaxHeight="150" Text="Параметры поиска">
+        <MudForm Model="@_filterModel" @ref="@_form">
+            <MudGrid>
+                <MudItem md="6" sm="12" xs="12">
+                    <MudTextField @bind-Value="_filterModel.SearchQuery" For="@(() => _filterModel.SearchQuery)" Immediate="true"/>
+                </MudItem>
+                <MudItem Class="d-flex flex-grow-1 gap-4 justify-center" md="12" sm="12" xs="12">
+                    <MudButton Class="ml-auto" Color="Color.Primary" OnClick="GetUsers" Variant="Variant.Filled">Поиск</MudButton>
+                    <MudButton OnClick="ClearFilter">Очистить</MudButton>
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </MudExpansionPanel>
+</MudExpansionPanels>
+
+@if (_metaData.TotalPages > 1)
+{
+    <MudItem class="align-center d-flex flex-column">
+        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_metaData.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
+    </MudItem>
+}
+
+
+<MudGrid Class="pt-5">
+    @foreach (var item in _userList)
+    {
+        <MudItem md="4" sm="12" xs="12">
+            <MudLink Href="@($"users/{item.Id}")" Underline="Underline.None">
+                <MudPaper Class="ma-2" Elevation="3">
+                    <MudGrid>
+                        <MudItem Class="pa-0" md="3" sm="3" xs="3">
+                            <MudAvatar Class="h-100 w-100" Color="Color.Info" Rounded="true">
+                                <MudText Typo="Typo.h4">@item.Firstname[0]@item.Lastname[0]</MudText>
+                            </MudAvatar>
+                        </MudItem>
+                        <MudItem md="9" sm="9" xs="9">
+                            <MudText>@(item.Firstname + " " + item.Lastname)</MudText>
+                            <MudText Typo="Typo.subtitle2">Должность</MudText>
+                            <MudText Typo="Typo.subtitle2">@item.Email</MudText>
+                            <MudText Typo="Typo.subtitle2">Офлайн</MudText>
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+            </MudLink>
+        </MudItem>
+    }
+</MudGrid>
+@if (_metaData.TotalPages > 1)
+{
+    <MudItem class="align-center d-flex flex-column">
+        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_metaData.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
+    </MudItem>
+}

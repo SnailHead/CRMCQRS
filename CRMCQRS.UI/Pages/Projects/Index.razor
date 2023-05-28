@@ -1,0 +1,68 @@
+﻿@page "/projects"
+@using MedOk.Extensions.Identity
+@attribute [Authorize(Roles = UserRoles.Admin)]
+
+<PageTitle>Проекты</PageTitle>
+<MudText Align="Align.Center" Class="m-2" Typo="Typo.h5">Проекты</MudText>
+<MudItem Class="align-items-end d-flex flex-column m-2">
+    <MudButton Color="Color.Primary" OnClick="OpenDialog" Variant="Variant.Filled">Добавить</MudButton>
+</MudItem>
+
+<MudExpansionPanels>
+    <MudExpansionPanel MaxHeight="150" Text="Параметры поиска">
+        <MudForm Model="@_filterModel" @ref="@_form">
+            <MudGrid>
+                <MudItem md="6" sm="12" xs="12">
+                    <MudTextField @bind-Value="_filterModel.SearchQuery" For="@(() => _filterModel.SearchQuery)" Immediate="true"/>
+                </MudItem>
+                <MudItem Class="d-flex flex-grow-1 gap-4 justify-center" md="12" sm="12" xs="12">
+                    <MudButton Class="ml-auto" Color="Color.Primary" OnClick="GetProjects" Variant="Variant.Filled">Поиск</MudButton>
+                    <MudButton OnClick="ClearFilter">Очистить</MudButton>
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </MudExpansionPanel>
+</MudExpansionPanels>
+
+@if (_metaData.TotalPages > 1)
+{
+    <div class="align-center d-flex flex-column">
+        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_metaData.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
+    </div>
+}
+
+<MudGrid>
+    @foreach (var item in _projectList)
+    {
+        <MudItem md="6" sm="12" xs="12">
+            <MudLink Underline="Underline.None" Href="@($"projects/{item.Id}")">
+                <MudPaper Class="ma-2 pa-8" Elevation="3">
+
+                    <MudText Class="ma-2">@item.Title</MudText>
+                    <MudText Class="ma-2">Создано: @item.CreationDate.ToShortDateString()</MudText>
+                    <MudText Class="ma-2">
+                        <MudIcon Class="mr-1" Icon="@Icons.Material.Filled.PlaylistAddCheck"/>Задач всего: @item.TotalTasks
+                    </MudText>
+                    <MudText Class="ma-2">
+                        <MudIcon Class="mr-1" Icon="@Icons.Material.Filled.DoneAll"/>Задач выполнено: @item.TasksCompleted
+                    </MudText>
+                    <MudText Class="ma-2">
+                        <MudIcon Class="mr-1" Icon="@Icons.Material.Filled.EditNote"/>Задач в работе: @item.TasksInProgress
+                    </MudText>
+                    <MudDivider/>
+                    @foreach (var tag in item.Tags)
+                    {
+                        <MudChip Class="ma-2" Style="@($"color: ${tag.Color}")" Variant="@(tag.IsFilled ? Variant.Filled : Variant.Outlined)">@tag.Title</MudChip>
+                    }
+                </MudPaper>
+            </MudLink>
+
+        </MudItem>
+    }
+</MudGrid>
+@if (_metaData.TotalPages > 1)
+{
+    <div class="align-center d-flex flex-column">
+        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_metaData.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
+    </div>
+}

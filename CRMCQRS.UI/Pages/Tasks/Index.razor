@@ -1,0 +1,72 @@
+﻿@page "/tasks"
+@using MedOk.Extensions.Enums
+@using MedOk.Extensions.Identity
+@attribute [Authorize(Roles = UserRoles.Admin)]
+
+<PageTitle>Задачи</PageTitle>
+<MudText Align="Align.Center" Class="m-2" Typo="Typo.h5">Задачи</MudText>
+<MudItem Class="align-items-end d-flex flex-column m-2">
+    <MudButton Color="Color.Primary" OnClick="OpenDialog" Variant="Variant.Filled">Добавить</MudButton>
+</MudItem>
+
+<MudExpansionPanels>
+    <MudExpansionPanel MaxHeight="150" Text="Параметры поиска">
+        <MudForm Model="@_filterModel" @ref="@_form">
+            <MudGrid>
+                <MudItem md="6" sm="12" xs="12">
+                    <MudTextField @bind-Value="_filterModel.SearchQuery" For="@(() => _filterModel.SearchQuery)" Immediate="true"/>
+                </MudItem>
+                <MudItem Class="d-flex flex-grow-1 gap-4 justify-center" md="12" sm="12" xs="12">
+                    <MudButton Class="ml-auto" Color="Color.Primary" OnClick="GetTasks" Variant="Variant.Filled">Поиск</MudButton>
+                    <MudButton OnClick="ClearFilter">Очистить</MudButton>
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </MudExpansionPanel>
+</MudExpansionPanels>
+
+@if (_metaData.TotalPages > 1)
+{
+    <div class="align-center d-flex flex-column">
+        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_metaData.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
+    </div>
+}
+
+<MudGrid>
+    @foreach (var item in _taskList)
+    {
+        <MudItem md="12" sm="12" xs="12">
+            <MudLink Href="@($"tasks/view/{item.Id}")" Underline="Underline.None">
+                <MudPaper Class="ma-2 pa-4" Elevation="3">
+                    <MudGrid>
+                        <MudItem Class="align-items-start d-flex flex-column justify-content-between" md="6" sm="6" xs="6">
+                            <MudText Class="ma-2">@item.Title</MudText>
+                            <MudChip Color="(Color)item.MissionPriority">@item.MissionPriority.GetDisplayName()</MudChip>
+                        </MudItem>
+                        <MudItem Class="align-items-start d-flex flex-column justify-content-between" md="3" sm="3" xs="3">
+                            <MudText>
+                                <MudAvatar Color="Color.Info">
+                                    <MudText Typo="Typo.h6">@item.ExecutorUser.Firstname[0]@item.ExecutorUser.Lastname[0]</MudText>
+                                </MudAvatar> @item.ExecutorUser.Firstname
+                            </MudText>
+                            <MudText>@item.Project.Title</MudText>
+                        </MudItem>
+                        <MudItem Class="align-items-start d-flex flex-column justify-content-between" md="3" sm="3" xs="3">
+                            <MudText>
+                                @item.StartDate.ToLongDateString() / @item.EndDate.ToLongDateString()
+                            </MudText>
+                            <MudText>Затрачено времени:</MudText>
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+            </MudLink>
+
+        </MudItem>
+    }
+</MudGrid>
+@if (_metaData.TotalPages > 1)
+{
+    <div class="align-center d-flex flex-column">
+        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_metaData.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
+    </div>
+}

@@ -1,0 +1,27 @@
+﻿
+<MudForm Model="@_model" @ref="@_form" Validation="@(_tagModelValidator.ValidateValue)" ValidationDelay="0">
+    <MudDialog>
+        <DialogContent>
+            <MudGrid>
+                <MudItem md="12" sm="12" xs="12">
+                    <MudTextField @bind-Value="_model.Title" For="@(() => _model.Title)" Immediate="true"/>
+                </MudItem>
+                <MudItem md="12" sm="12" xs="12">
+                    
+                </MudItem>
+                <MudItem md="12" sm="12" xs="12">
+                    <MudSwitch @bind-Checked="@_model.IsFilled" For="@(() => _model.IsFilled)"/>
+                </MudItem>
+                <MudTextField @bind-Value="_model.Id" DisableUnderLine="true" For="@(() => _model.Id)" Immediate="true" InputType="InputType.Hidden" Label="@null"/>
+                <MudItem Class="d-flex flex-grow-1 gap-4 justify-center" md="12" sm="12" xs="12">
+                    <MudColorPicker ValueChanged="OnChangeColorPicker"  ColorPickerView="ColorPickerView.Palette" ColorPickerMode="ColorPickerMode.HEX" DisableAlpha="true" DisableInputs="true" PickerVariant="PickerVariant.Static" />
+                </MudItem>
+            </MudGrid>
+
+        </DialogContent>
+        <DialogActions>
+            <MudButton Class="ml-auto" Color="Color.Primary" OnClick="Submit" Variant="Variant.Filled">Сохранить</MudButton>
+            <MudButton OnClick="Cancel">Отмена</MudButton>
+        </DialogActions>
+    </MudDialog>
+</MudForm>
