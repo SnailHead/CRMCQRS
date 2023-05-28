@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CRMCQRS.API.Models;
+using CRMCQRS.API.Models.Tags;
 using CRMCQRS.Application.Tags.Commands.CreateTag;
 using CRMCQRS.Application.Tags.Commands.DeleteTag;
 using CRMCQRS.Application.Tags.Commands.UpdateTag;

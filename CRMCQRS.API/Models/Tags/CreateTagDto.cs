@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using CRMCQRS.Application.Common.Mappings;
 using CRMCQRS.Application.Tags.Commands.CreateTag;
-using CRMCQRS.Domain;
 
-namespace CRMCQRS.API.Models;
+namespace CRMCQRS.API.Models.Tags;
 
 public class CreateTagDto : IMapWith<CreateTagCommand>
 {

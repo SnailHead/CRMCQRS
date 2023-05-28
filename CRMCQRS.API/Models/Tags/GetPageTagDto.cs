@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using CRMCQRS.Application.Common.Mappings;
-using CRMCQRS.Application.Tags.Commands.CreateTag;
 using CRMCQRS.Application.Tags.Queries.GetPageTag;
 
-namespace CRMCQRS.API.Models;
+namespace CRMCQRS.API.Models.Tags;
 
 public class GetPageTagDto : IMapWith<GetPageTagQuery>
 {
