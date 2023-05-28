@@ -5,7 +5,7 @@ using CRMCQRS.Infrastructure.Repository;
 using CRMCQRS.Infrastructure.UnitOfWork;
 using MediatR;
 
-namespace CRMCQRS.Application.Tags.Queries.GetAllTag;
+namespace CRMCQRS.Application.Tags.Queries.GetPageTag;
 
 public class GetPageTagQueryHandler : IRequestHandler<GetPageTagQuery, IPagedList<TagViewModel>>
 

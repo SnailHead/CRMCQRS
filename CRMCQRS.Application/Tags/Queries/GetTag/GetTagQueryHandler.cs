@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using CRMCQRS.Application.Common.Mappings;
-using CRMCQRS.Application.Tags.Commands.UpdateTag;
 using CRMCQRS.Domain;
 using CRMCQRS.Infrastructure.Repository;
 using CRMCQRS.Infrastructure.UnitOfWork;

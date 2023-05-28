@@ -1,11 +1,10 @@
 ﻿using System.Linq.Expressions;
-using CRMCQRS.Application.Common;
 using CRMCQRS.Application.Common.Filtration;
 using CRMCQRS.Domain;
 using CRMCQRS.Infrastructure.Pages;
 using MediatR;
 
-namespace CRMCQRS.Application.Tags.Queries.GetAllTag;
+namespace CRMCQRS.Application.Tags.Queries.GetPageTag;
 
 public class GetPageTagQuery :  IRequest<IPagedList<TagViewModel>>, IFilterModel<GetPageTagQuery, Tag>
 {

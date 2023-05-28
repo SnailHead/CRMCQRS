@@ -12,14 +12,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CRMCQRS.API.Controllers;
 
-[Produces("application/json")]
-[Route("api/[controller]")]
-public class TagsController : BaseController
+public class ProjectsController : BaseController
 {
     private readonly IMapper _mapper;
 
-    public TagsController(IMapper mapper) => _mapper = mapper;
-    
+    public ProjectsController(IMapper mapper) => _mapper = mapper;
+
     [HttpPost]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -31,6 +29,7 @@ public class TagsController : BaseController
         var vm = await Mediator.Send(query);
         return Ok(vm);
     }
+
     [HttpGet("{id}")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -42,16 +41,18 @@ public class TagsController : BaseController
 
         return Ok(vm);
     }
+
     [HttpPost]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<Guid>> Create([FromBody] CreateTagDto request)
     {
-        var command =  _mapper.Map<CreateTagCommand>(request);
+        var command = _mapper.Map<CreateTagCommand>(request);
         var vm = await Mediator.Send(command);
         return Ok(vm);
     }
+
     [HttpGet]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -62,6 +63,7 @@ public class TagsController : BaseController
         var vm = await Mediator.Send(command);
         return Ok(vm);
     }
+
     [HttpGet]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
