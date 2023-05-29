@@ -20,19 +20,21 @@ public class TagsController : BaseController
     private readonly IMapper _mapper;
 
     public TagsController(IMapper mapper) => _mapper = mapper;
-    
+
     [HttpPost]
+    [Route("GetAll")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IPagedList<TagViewModel>>> GetAll([FromBody] GetPageTagDto request)
     {
-
         var query = _mapper.Map<GetPageTagQuery>(request);
         var vm = await Mediator.Send(query);
         return Ok(vm);
     }
-    [HttpGet("{id}")]
+
+    [HttpGet]
+    [Route("{id}")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -43,17 +45,21 @@ public class TagsController : BaseController
 
         return Ok(vm);
     }
+
     [HttpPost]
+    [Route("Create")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<Guid>> Create([FromBody] CreateTagDto request)
     {
-        var command =  _mapper.Map<CreateTagCommand>(request);
+        var command = _mapper.Map<CreateTagCommand>(request);
         var vm = await Mediator.Send(command);
         return Ok(vm);
     }
+
     [HttpGet]
+    [Route("Update")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -63,7 +69,9 @@ public class TagsController : BaseController
         var vm = await Mediator.Send(command);
         return Ok(vm);
     }
+
     [HttpGet]
+    [Route("Delete")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

@@ -1,14 +1,23 @@
 version: '3.4'
 
 services:
-    crm:
+     api:
         container_name: crmcqrs
         restart: always
         build:
-            - context: .
-            - dockerfile: CRMCQRS.API/Dockerfile  
+            context: .
+            dockerfile: CRMCQRS.API/Dockerfile  
         environment:
             - ASPNETCORE_ENVIRONMENT=Production
         ports:
             - "10001:10001"
             - "10000:10000"
+     mssql:
+        image: "mcr.microsoft.com/mssql/server"
+        container_name: mssql
+        hostname: mssql
+        environment:
+            SA_PASSWORD: "Pass123!"
+        restart: unless-stopped
+        ports:
+            - "11433:1433"

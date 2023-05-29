@@ -11,7 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRMCQRS.API.Controllers;
-
+[Produces("application/json")]
+[Route("api/[controller]")]
 public class UsersController : BaseController
 {
     private readonly IMapper _mapper;
@@ -19,6 +20,7 @@ public class UsersController : BaseController
     public UsersController(IMapper mapper) => _mapper = mapper;
 
     [HttpPost]
+    [Route("GetAll")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -30,7 +32,8 @@ public class UsersController : BaseController
         return Ok(vm);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet]
+    [Route("{id}")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -43,6 +46,7 @@ public class UsersController : BaseController
     }
 
     [HttpPost]
+    [Route("Create")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -54,6 +58,7 @@ public class UsersController : BaseController
     }
 
     [HttpGet]
+    [Route("Update")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -65,6 +70,7 @@ public class UsersController : BaseController
     }
 
     [HttpGet]
+    [Route("Delete")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
