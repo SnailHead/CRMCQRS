@@ -33,7 +33,6 @@ jobs:
                 with:
                     push: true
                     tags: |
-                        ghcr.io/snailhead/prod-crm:${{ github.event.release.tag_name }}
                         ghcr.io/snailhead/prod-crm:latest
                     secrets: |
                         "ASPNETCORE_ENVIRONMENT=Release"
@@ -45,7 +44,6 @@ jobs:
                 with:
                     push: true
                     tags: |
-                        ghcr.io/snailhead/prod-template-nginx:${{ github.event.release.tag_name }}
                         ghcr.io/snailhead/prod-template-nginx:latest
                     build-args: |
                         build_mode=Release
