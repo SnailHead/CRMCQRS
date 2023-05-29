@@ -29,8 +29,8 @@ jobs:
               with:
                   push: true
                   tags: |
-                      ghcr.io/${{ github.repository_owner }}/prod-crm:${{ github.event.release.tag_name }}
-                      ghcr.io/${{ github.repository_owner }}/prod-crm:latest
+                      ghcr.io/${{ github.repository_owner | lower }}/prod-crm:${{ github.event.release.tag_name }}
+                      ghcr.io/${{ github.repository_owner | lower }}/prod-crm:latest
                   secrets: |
                       "ASPNETCORE_ENVIRONMENT=Release"
                   build-args: |
@@ -41,8 +41,8 @@ jobs:
               with:
                   push: true
                   tags: |
-                      ghcr.io/${{ github.repository_owner }}/prod-template-nginx:${{ github.event.release.tag_name }}
-                      ghcr.io/${{ github.repository_owner }}/prod-template-nginx:latest
+                      ghcr.io/${{ github.repository_owner | lower }}/prod-template-nginx:${{ github.event.release.tag_name }}
+                      ghcr.io/${{ github.repository_owner | lower }}/prod-template-nginx:latest
                   build-args: |
                       build_mode=Release
 
