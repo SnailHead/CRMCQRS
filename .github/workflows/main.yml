@@ -1,4 +1,4 @@
-name: 'build and deploy test server'
+name: 'build and deploy server'
 on:
     release:
         types: [published]
@@ -21,16 +21,16 @@ jobs:
               uses: docker/login-action@v1
               with:
                   registry: ghcr.io
-                  username: "yourGithubUsername"
+                  username: "snailhead"
                   password: ${{ secrets.REGISTRY_TOKEN }}
 
-            - name: "Build&Deploy template-server"
+            - name: "Build&Deploy crm"
               uses: docker/build-push-action@v2
               with:
                   push: true
                   tags: |
-                      ghcr.io/${{ github.repository_owner }}/prod-template-server:${{ github.event.release.tag_name }}
-                      ghcr.io/${{ github.repository_owner }}/prod-template-server:latest
+                      ghcr.io/${{ github.repository_owner }}/prod-crm:${{ github.event.release.tag_name }}
+                      ghcr.io/${{ github.repository_owner }}/prod-crm:latest
                   secrets: |
                       "ASPNETCORE_ENVIRONMENT=Release"
                   build-args: |
