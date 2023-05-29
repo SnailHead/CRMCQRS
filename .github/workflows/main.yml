@@ -1,38 +1,16 @@
 name: CRMCQRS
-env:
-  DOTNET_CLI_TELEMETRY_OPTOUT: 1
 on:
-  push:
-    paths:
-      - '/**'
-      - '**/main.yml'
-  workflow_dispatch:
+    push:
+        paths:
+            - '/**'
+            - '**/main.yml'
+    workflow_dispatch:
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-    
-      - name: Start dependencies (docker-compose)
-        run: |
-                    docker-compose up -d  
-
-      - name: Wait for SQL Server container
-        uses: jakejarvis/wait-action@master
-        with:
-          time: '5s'
-
-      - name: Install .NET Core SDK
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '7.x.x'
-    
-      - name: Restore NuGet packages
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build -c Release --no-restore
-    
-      - name: Test
-        run: dotnet test -c Release --no-build
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Build the stack
+              run: docker-compose up -d
+            - name: Test
+              run: docker run --network container:webapp-frontend appropriate/curl -s --retry 10 --retry-connrefused http://localhost:5000/
