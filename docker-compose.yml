@@ -5,8 +5,7 @@ services:
         container_name: crmcqrs
         restart: always
         build:
-            context: .
-            dockerfile: ./CRMCQRS.API/Dockerfile  
+            context: ./CRMCQRS.API  
         environment:
             - ASPNETCORE_ENVIRONMENT=Production
         ports:
