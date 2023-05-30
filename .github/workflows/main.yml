@@ -14,25 +14,25 @@ jobs:
         steps:
             -   name: "Checkout repository"
                 uses: actions/checkout@v2
-deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        key: ${{ secrets.SERVER_KEY }}
-        port: ${{ secrets.SERVER_PORT }}
-        passphrase : ${{ secrets.PASSPHRASE }}
-        script: |
-            cd ~/crm/crmcqrs
-            # pull git updates
-            git pull origin master
-            # rm local images cache
-            docker rmi --force elhardoum/dotnet-cd-demo:latest || true
-            docker rmi --force elhardoum/dotnet-cd-demo-db:latest || true
-            # pull images from remote
-            docker-compose build --pull --no-cache
-            docker-compose up -d --force-recreate
+    deploy:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.SERVER_HOST }}
+            username: ${{ secrets.SERVER_USERNAME }}
+            key: ${{ secrets.SERVER_KEY }}
+            port: ${{ secrets.SERVER_PORT }}
+            passphrase : ${{ secrets.PASSPHRASE }}
+            script: |
+                cd ~/crm/crmcqrs
+                # pull git updates
+                git pull origin master
+                # rm local images cache
+                docker rmi --force elhardoum/dotnet-cd-demo:latest || true
+                docker rmi --force elhardoum/dotnet-cd-demo-db:latest || true
+                # pull images from remote
+                docker-compose build --pull --no-cache
+                docker-compose up -d --force-recreate
