@@ -1,12 +1,7 @@
 name: 'build and deploy server'
 on:
     push:
-        paths:
-            - '/'
-            - '**/main.yml'
-    release:
-        types: [ published ]
-    workflow_dispatch:
+        branches: [ master ]
 jobs:
     build:
         name: 'Build & Publish'
