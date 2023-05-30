@@ -33,7 +33,7 @@ jobs:
                 with:
                     push: true
                     tags: |
-                        ghcr.io/snailhead/prod-crm:latest
+                        ghcr.io/snailhead/crmcqrs:latest
                     secrets: |
                         "ASPNETCORE_ENVIRONMENT=Release"
                     build-args: |
