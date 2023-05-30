@@ -11,8 +11,8 @@ services:
         environment:
             - ASPNETCORE_ENVIRONMENT=Production
         ports:
-            - "10001:10001"
-            - "10000:10000"
+            - "10001:443"
+            - "10000:80"
      mssql:
         image: "mcr.microsoft.com/mssql/server"
         container_name: mssql

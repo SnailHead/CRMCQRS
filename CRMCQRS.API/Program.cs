@@ -1,5 +1,6 @@
 using CRMCQRS.Infrastructure.Database;
 using CRMCQRS.Infrastructure.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnectionString");
@@ -10,7 +11,7 @@ string connectionString = builder.Configuration.GetConnectionString("DefaultConn
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-builder.Services.AddDbContext<DefaultDbContext>();
+builder.Services.AddDbContext<DefaultDbContext>(option => option.UseSqlServer(connectionString));
 builder.Services.AddUnitOfWork<DefaultDbContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
