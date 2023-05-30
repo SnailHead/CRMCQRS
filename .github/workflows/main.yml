@@ -31,6 +31,8 @@ jobs:
             -   name: "Build&Deploy crm"
                 uses: docker/build-push-action@v2
                 with:
+                    context: .
+                    file: ./CRMCQRS.API/Dockerfile
                     push: true
                     tags: |
                         ghcr.io/snailhead/crmcqrs:latest
