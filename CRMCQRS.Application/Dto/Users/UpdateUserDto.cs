@@ -9,6 +9,7 @@ public class UpdateUserDto : IMapWith<UpdateUserCommand>
     public Guid Id { get; set; }
     public string Firstname { get; set; }
     public string Lastname { get; set; }
+    public string Email { get; set; }
     public string? Middlename { get; set; }
     public DateTime? BirthDate { get; set; }
     public int DepartmentId { get; set; }

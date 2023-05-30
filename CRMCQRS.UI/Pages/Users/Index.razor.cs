@@ -1,4 +1,5 @@
-﻿using CRMCQRS.Domain;
+﻿using CRMCQRS.Application.Users.Queries;
+using CRMCQRS.Domain;
 using CRMCQRS.Infrastructure.Pages;
 using CRMCQRS.Infrastructure.Repository;
 using CRMCQRS.Infrastructure.UnitOfWork;
@@ -18,11 +19,9 @@ public partial class Index
     [Inject]
     private IDialogService _dialogService { get; set; }
 
-    private List<UserModel> _userList = new();
-    private UsersFilterModel _filterModel = new();
+    private IPagedList<UserViewModel> _pagedList { get; set; }
+
     private MudForm _form;
-    public MetaData _metaData { get; set; } = new MetaData();
-    private PageParameters _paginationParameters = new PageParameters();
     private IRepository<User> _userRepository { get; set; }
 
     [Inject]
@@ -37,19 +36,13 @@ public partial class Index
 
     private async Task SelectedPage(int page)
     {
-        _paginationParameters.PageNumber = page;
+        _pagedList.PageIndex = page;
         await GetUsers();
     }
 
     private async Task GetUsers()
     {
-        var userPagedList = await _userRepository.GetPagedListAsync(pageSize: _paginationParameters.PageSize,
-            pageIndex: _paginationParameters.PageNumber - 1, disableTracking: true);
-        _userList = UserModel.FromEntitiesList(userPagedList.Items);
-        var pagedList = new PagedList<UserModel>(_userList, userPagedList.TotalCount,
-            _paginationParameters.PageNumber,
-            _paginationParameters.PageSize);
-        _metaData = pagedList.MetaData;
+        
     }
 
     private void OpenDialog()
@@ -61,14 +54,10 @@ public partial class Index
 
     private async Task DeleteUser(Guid id)
     {
-        _userRepository.Delete(id);
-        await _unitOfWork.SaveChangesAsync();
-        _snackbar.SendAfterSave(_unitOfWork.LastSaveChangesResult.IsOk);
     }
 
     private async Task ClearFilter()
     {
-        _filterModel = new UsersFilterModel();
         await GetUsers();
     }
 }

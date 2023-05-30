@@ -1,4 +1,6 @@
 ﻿using System.Net.Http.Json;
+using CRMCQRS.Application.Dto.Users;
+using CRMCQRS.Application.Validators.Users;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -7,16 +9,16 @@ namespace CRMCQRS.UI.Pages.Users;
 public partial class Login
 {
     [Inject]
-    private NavigationManager NavigationManager { get; set; }
+    private NavigationManager _navigationManager { get; set; }
 
     [Inject]
-    private IConfiguration Configuration { get; set; }
+    private IConfiguration _configuration { get; set; }
 
     [Inject]
     private ILocalStorageService localStorage { get; set; }
 
     [Inject]
-    private ISnackbar Snackbar { get; set; }
+    private ISnackbar _snackbar { get; set; }
 
     [Inject]
     private AuthenticationStateProvider authState { get; set; }
@@ -24,8 +26,10 @@ public partial class Login
     [Inject]
     private HttpClient Client { get; set; }
 
+    private LoginDtoValidator _validator = new();
+
     private MudForm Form;
-    private LoginModel Model { get; set; } = new();
+    private LoginDto _model { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -37,11 +41,11 @@ public partial class Login
         if (Form.IsValid)
         {
             var result = 
-                await Client.PostAsJsonAsync(Configuration.GetValue<string>("Authority") + "/Identity/Login",
-                Model);
+                await Client.PostAsJsonAsync(_configuration.GetValue<string>("Authority") + "/Identity/Login",
+                _model);
             if (!result.IsSuccessStatusCode)
             {
-                Snackbar.Add("Ошибка авторизации", Severity.Error);
+                _snackbar.Add("Ошибка авторизации", Severity.Error);
                 return;
             }
 
@@ -50,7 +54,7 @@ public partial class Login
             await authState.GetAuthenticationStateAsync();
             if (token != null)
             {
-                NavigationManager.NavigateTo("/", forceLoad: true);
+                _navigationManager.NavigateTo("/", forceLoad: true);
             }
         }
     }

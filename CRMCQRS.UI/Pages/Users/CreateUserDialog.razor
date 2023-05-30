@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Authorization
 @using CRMCQRS.Infrastructure.Policies
+@using MudBlazor
 @attribute [Authorize(Policy = $"{Policy.Developer},{Policy.Admin},{Policy.DepartmentHead}")]
 
 <PageTitle>Пользователи</PageTitle>
@@ -8,13 +9,13 @@
 <MudGrid>
     <MudItem md="12" sm="12" xs="12">
         <MudPaper Class="pa-4">
-            <MudForm Model="@Model" @ref="@Form" Validation="@(UserModelValidator.ValidateValue)" ValidationDelay="0">
+            <MudForm Model="@Model" @ref="@_form" Validation="@(_validator.ValidateValue)" ValidationDelay="0">
                 <MudGrid>
                     <MudItem md="6" sm="12" xs="12">
                         <MudTextField @bind-Value="Model.Firstname" For="@(() => Model.Firstname)" Immediate="true"/>
                     </MudItem>
                     <MudItem md="6" sm="12" xs="12">
-                        <MudTextField @bind-Value="Model.PasswordHash" For="@(() => Model.PasswordHash)" Immediate="true"/>
+                        <MudTextField @bind-Value="Model.Password" For="@(() => Model.Password)" Immediate="true"/>
                     </MudItem>
                     <MudItem md="6" sm="12" xs="12">
                         <MudTextField @bind-Value="Model.Lastname" For="@(() => Model.Lastname)" Immediate="true"/>
@@ -26,34 +27,11 @@
                         <MudTextField @bind-Value="Model.Email" For="@(() => Model.Email)" Immediate="true"/>
                     </MudItem>
                     <MudItem md="6" sm="12" xs="12">
-                        <MudSelect AnchorOrigin="Origin.BottomCenter" @bind-SelectedValues="SelectedRoles" @bind-Value="Model.Roles" For="@(() => Model.Roles)" MultiSelection="true" T="string">
-                            @foreach (string value in Roles)
-                            {
-                                <MudSelectItem T="string" Value="value">
-                                    @value
-                                </MudSelectItem>
-                            }
-                        </MudSelect>
-                    </MudItem>
-                    <MudItem md="6" sm="12" xs="12">
-                        <MudCheckBox @bind-Checked="Model.IsBlocked">Заблокирован</MudCheckBox>
-                    </MudItem>
-                    <MudItem md="6" sm="12" xs="12">
-                        <MudTextField @bind-Value="Model.RegistrationDate" For="@(() => Model.RegistrationDate)" Format="yyyy-MM-dd" Immediate="true" InputType="InputType.Date" T="DateTime"/>
-                    </MudItem>
-                    <MudItem md="6" sm="12" xs="12">
                         <MudTextField @bind-Value="Model.BirthDate" For="@(() => Model.BirthDate)" Format="yyyy-MM-dd" Immediate="true" InputType="InputType.Date" T="DateTime?"/>
                     </MudItem>
-                    <MudTextField @bind-Value="Model.Id" DisableUnderLine="true" For="@(() => Model.Id)" Immediate="true" InputType="InputType.Hidden" Label="@null"/>
-                    <MudTextField @bind-Value="Model.EmailConfirmed" DisableUnderLine="true" For="@(() => Model.EmailConfirmed)" Immediate="true" InputType="InputType.Hidden" Label="@null"/>
-                    <MudTextField @bind-Value="Model.PasswordHash" DisableUnderLine="true" For="@(() => Model.PasswordHash)" Immediate="true" InputType="InputType.Hidden" Label="@null"/>
-                    <MudTextField @bind-Value="Model.PhoneNumber" DisableUnderLine="true" For="@(() => Model.PhoneNumber)" Immediate="true" InputType="InputType.Hidden" Label="@null"/>
-                    <MudTextField @bind-Value="Model.PhoneNumberConfirmed" DisableUnderLine="true" For="@(() => Model.PhoneNumberConfirmed)" Immediate="true" InputType="InputType.Hidden" Label="@null"/>
-                    <MudTextField @bind-Value="Model.TwoFactorEnabled" DisableUnderLine="true" For="@(() => Model.TwoFactorEnabled)" Immediate="true" InputType="InputType.Hidden" Label="@null"/>
                     <MudTextField @bind-Value="Model.TelegramChatId" DisableUnderLine="true" For="@(() => Model.TelegramChatId)" Immediate="true" InputType="InputType.Hidden" Label="@null"/>
-                    <MudTextField @bind-Value="Model.BotId" DisableUnderLine="true" For="@(() => Model.BotId)" Immediate="true" InputType="InputType.Hidden" Label="@null"/>
                     <MudItem Class="d-flex flex-grow-1 gap-4 justify-center" md="12" sm="12" xs="12">
-                        <MudButton Class="ml-auto" Color="Color.Primary" OnClick="@(async () => await Submit())" Variant="Variant.Filled">@(Exists ? "Сохранить" : "Создать")</MudButton>
+                        <MudButton Class="ml-auto" Color="Color.Primary" OnClick="@(async () => await Submit())" Variant="Variant.Filled">Создать</MudButton>
                         <MudButton Href="/users">Назад</MudButton>
                     </MudItem>
 

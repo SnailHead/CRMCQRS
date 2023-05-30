@@ -1,5 +1,4 @@
 ﻿@page "/users"
-@using MedOk.Extensions.Identity
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components
 @using CRMCQRS.Infrastructure.Policies
@@ -19,7 +18,7 @@
     <MudButton Color="Color.Primary" OnClick="OpenDialog" Variant="Variant.Filled">Добавить</MudButton>
 </MudItem>
 
-<MudExpansionPanels>
+@*<MudExpansionPanels>
     <MudExpansionPanel MaxHeight="150" Text="Параметры поиска">
         <MudForm Model="@_filterModel" @ref="@_form">
             <MudGrid>
@@ -33,18 +32,18 @@
             </MudGrid>
         </MudForm>
     </MudExpansionPanel>
-</MudExpansionPanels>
+</MudExpansionPanels>*@
 
-@if (_metaData.TotalPages > 1)
+@if (_pagedList.TotalPages > 1)
 {
     <MudItem class="align-center d-flex flex-column">
-        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_metaData.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
+        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_pagedList.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
     </MudItem>
 }
 
 
 <MudGrid Class="pt-5">
-    @foreach (var item in _userList)
+    @foreach (var item in _pagedList.Items)
     {
         <MudItem md="4" sm="12" xs="12">
             <MudLink Href="@($"users/{item.Id}")" Underline="Underline.None">
@@ -67,9 +66,3 @@
         </MudItem>
     }
 </MudGrid>
-@if (_metaData.TotalPages > 1)
-{
-    <MudItem class="align-center d-flex flex-column">
-        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_metaData.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
-    </MudItem>
-}

@@ -1,4 +1,5 @@
-﻿using CRMCQRS.Domain;
+﻿using CRMCQRS.Application.Validators.Users;
+using CRMCQRS.Domain;
 using CRMCQRS.Domain.Common.Enums;
 using CRMCQRS.Infrastructure.Repository;
 using CRMCQRS.Infrastructure.UnitOfWork;
@@ -19,7 +20,7 @@ public partial class Update
 
     private MudForm _form;
     private UserStatisticModel _model { get; set; } = new();
-    private UserModelFluentValidator _userModelValidator = new();
+    private UpdateUserDtoValidator _userModelValidator = new();
 
     [Parameter]
     public Guid? Id { get; set; }
@@ -28,17 +29,12 @@ public partial class Update
     private int _tasksCompleted { get; set; }
     private int _tasksInProgress { get; set; }
     private List<ChartSeries> _series = new();
-    private IRepository<User> _userRepository { get; set; }
-
-    [Inject]
-    private IUnitOfWork _unitOfWork { get; set; }
 
     private string[] _xAxisLabels =
         { "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье" };
 
     protected override async Task OnInitializedAsync()
     {
-        _userRepository = _unitOfWork.GetRepository<User>();
         if (Id.HasValue)
         {
             var entity = await _userRepository.GetFirstOrDefaultAsync(predicate: item => item.Id == Id,

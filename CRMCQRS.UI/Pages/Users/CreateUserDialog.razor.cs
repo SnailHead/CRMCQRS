@@ -1,4 +1,6 @@
 ﻿using System.Net.Http.Json;
+using CRMCQRS.Application.Dto.Users;
+using CRMCQRS.Application.Validators.Users;
 using CRMCQRS.Domain;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -7,50 +9,43 @@ namespace CRMCQRS.UI.Pages.Users;
 
 public partial class CreateUserDialog
 {
-    [Inject] private NavigationManager NavigationManager { get; set; }
-    [Inject] private ISnackbar Snackbar { get; set; }
-    [Inject] private HttpClient Client { get; set; }
-    private MudForm Form;
-    private List<string> Roles { get; set; } = new();
-    private IEnumerable<string> SelectedRoles { get; set; } = new HashSet<string>() { UserRoles.User };
-    [Parameter] public UserModel Model { get; set; } = new();
-    private UserModelFluentValidator UserModelValidator = new();
-    private bool Exists;
+    [Inject]
+    private NavigationManager _navigationManager { get; set; }
+
+    [Inject]
+    private ISnackbar _snackbar { get; set; }
+
+    [Inject]
+    private HttpClient _httpClient { get; set; }
+
+    private MudForm _form;
+
+    [Parameter]
+    public CreateUserDto Model { get; set; } = new();
+
+    private CreateUserDtoValidator _validator = new();
 
     protected override async Task OnInitializedAsync()
     {
-        Roles = JsonConvert.DeserializeObject<List<Role>>(await Client.GetStringAsync("roles/get")).Select(item => item.Name)!.ToList();
-
-        if (Model.Roles != null)
-        {
-            SelectedRoles =
-                new HashSet<string>(Model.Roles.Split(",", StringSplitOptions.RemoveEmptyEntries).ToList());
-        }
-        else
-        {
-            Model.Roles = UserRoles.User;
-        }
-
-        Exists = Model?.Id != Guid.Empty;
     }
 
     private async Task Submit()
     {
-        await Form.Validate();
+        await _form.Validate();
 
-        if (Form.IsValid)
+        if (_form.IsValid)
         {
-            var response = await Client.PostAsJsonAsync("users/update", Model);
+            var response = await _httpClient.PostAsJsonAsync("users/update", Model);
             if (response.IsSuccessStatusCode)
             {
-                Snackbar.Add("Данные сохранены", Severity.Success);
+                _snackbar.Add("Данные сохранены", Severity.Success);
             }
             else
             {
-                Snackbar.Add("При сохранение возникла ошибка", Severity.Error);
+                _snackbar.Add("При сохранение возникла ошибка", Severity.Error);
             }
 
-            NavigationManager.NavigateTo("users", true);
+            _navigationManager.NavigateTo("users", true);
         }
     }
 }
