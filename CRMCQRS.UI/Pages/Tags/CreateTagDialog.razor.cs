@@ -1,4 +1,13 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Net.Http.Json;
+using CRMCQRS.Application.Dto.Tags;
+using CRMCQRS.Application.Notification;
+using CRMCQRS.Application.Validators.Tags;
+using CRMCQRS.Domain;
+using CRMCQRS.Infrastructure.Repository;
+using Microsoft.AspNetCore.Components;
+using MudBlazor;
+using MudBlazor.Utilities;
+using Color = System.Drawing.Color;
 
 namespace CRMCQRS.UI.Pages.Tags;
 
@@ -11,7 +20,7 @@ public partial class CreateTagDialog
     private ISnackbar _snackbar { get; set; }
 
     [Inject]
-    private IUnitOfWork _unitOfWork { get; set; }
+    private HttpClient _httpClient { get; set; }
 
     [CascadingParameter]
     private MudDialogInstance _mudDialog { get; set; }
@@ -19,34 +28,36 @@ public partial class CreateTagDialog
     private MudForm _form;
 
     [Parameter]
-    public TagModel _model { get; set; } = new TagModel();
+    public CreateTagDto _model { get; set; } = new CreateTagDto();
 
     private List<int> _colors { get; set; } = typeof(Color).GetEnumValues().Cast<int>().ToList();
-    private TagModelFluentValidator _tagModelValidator = new();
-    
+    private CreateTagDtoValidator _validator = new ();
+
     private IRepository<Tag> _tagRepository { get; set; }
 
     private void Cancel() => _mudDialog.Cancel();
+
     protected override async Task OnInitializedAsync()
     {
-        _tagRepository = _unitOfWork.GetRepository<Tag>();
     }
+
     private async Task Submit()
     {
         await _form.Validate();
-
-        if (_form.IsValid)
+        if (!_form.IsValid)
         {
-            if (_model.Id == Guid.Empty)
-                await _tagRepository.InsertAsync(TagModel.ToEntity(_model));
-            else
-                _tagRepository.Update(TagModel.ToEntity(_model));
-            
-            await _unitOfWork.SaveChangesAsync();
-            
-            _snackbar.SendAfterSave(_unitOfWork.LastSaveChangesResult.IsOk);
-            _navigationManager.NavigateTo("tags", true);
+            _snackbar.Add(NotificationMessages.FormValidationFail, Severity.Warning);
+            return;
         }
+
+        var response = await _httpClient.PostAsJsonAsync("Tags/Create", _model);
+        if (!response.IsSuccessStatusCode)
+        {
+            _snackbar.Add(NotificationMessages.ErrorFromCreate, Severity.Error);
+            return;
+        }
+        
+        _navigationManager.NavigateTo("tags", true);
     }
 
     private void OnChangeColorPicker(MudColor mudColor)

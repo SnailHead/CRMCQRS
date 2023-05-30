@@ -2,7 +2,7 @@
 using CRMCQRS.Application.Common.Mappings;
 using CRMCQRS.Application.Projects.Commands.CreateProject;
 
-namespace CRMCQRS.API.Models.Projects;
+namespace CRMCQRS.Application.Dto.Projects;
 
 public class CreateProjectDto : IMapWith<CreateProjectCommand>
 {

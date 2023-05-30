@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using CRMCQRS.API.Models;
-using CRMCQRS.API.Models.Tags;
+using CRMCQRS.Application.Dto.Tags;
 using CRMCQRS.Application.Tags.Commands.CreateTag;
 using CRMCQRS.Application.Tags.Commands.DeleteTag;
 using CRMCQRS.Application.Tags.Commands.UpdateTag;
@@ -22,11 +21,11 @@ public class TagsController : BaseController
     public TagsController(IMapper mapper) => _mapper = mapper;
 
     [HttpPost]
-    [Route("GetAll")]
+    [Route("GetPage")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<IPagedList<TagViewModel>>> GetAll([FromBody] GetPageTagDto request)
+    public async Task<ActionResult<IPagedList<TagViewModel>>> GetPage([FromBody] GetPageTagDto request)
     {
         var query = _mapper.Map<GetPageTagQuery>(request);
         var vm = await Mediator.Send(query);

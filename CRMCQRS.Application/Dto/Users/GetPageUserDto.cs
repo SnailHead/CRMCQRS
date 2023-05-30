@@ -2,7 +2,7 @@
 using CRMCQRS.Application.Common.Mappings;
 using CRMCQRS.Application.Users.Queries.GetPageUser;
 
-namespace CRMCQRS.API.Models.Users;
+namespace CRMCQRS.Application.Dto.Users;
 
 public class GetPageUserDto : IMapWith<GetPageUserQuery>
 {

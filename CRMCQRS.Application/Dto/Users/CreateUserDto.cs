@@ -2,7 +2,7 @@
 using CRMCQRS.Application.Common.Mappings;
 using CRMCQRS.Application.Users.Commands.CreateUser;
 
-namespace CRMCQRS.API.Models.Users;
+namespace CRMCQRS.Application.Dto.Users;
 
 public class CreateUserDto : IMapWith<CreateUserCommand>
 {

@@ -1,6 +1,9 @@
 ﻿@page "/projects"
-@using MedOk.Extensions.Identity
-@attribute [Authorize(Roles = UserRoles.Admin)]
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components
+@using CRMCQRS.Infrastructure.Policies
+@using MudBlazor
+@attribute [Authorize(Policy = $"{Policy.Developer},{Policy.Admin},{Policy.DepartmentHead}")]
 
 <PageTitle>Проекты</PageTitle>
 <MudText Align="Align.Center" Class="m-2" Typo="Typo.h5">Проекты</MudText>

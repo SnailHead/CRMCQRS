@@ -2,7 +2,7 @@
 using CRMCQRS.Application.Common.Mappings;
 using CRMCQRS.Application.Projects.Queries.GetPageProject;
 
-namespace CRMCQRS.API.Models.Projects;
+namespace CRMCQRS.Application.Dto.Projects;
 
 public class GetPageProjectDto : IMapWith<GetPageProjectQuery>
 {

@@ -1,4 +1,15 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using CRMCQRS.Application.Dto.Tags;
+using CRMCQRS.Application.Notification;
+using CRMCQRS.Application.Tags.Queries;
+using CRMCQRS.Domain;
+using CRMCQRS.Infrastructure.Pages;
+using CRMCQRS.Infrastructure.Repository;
+using CRMCQRS.Infrastructure.UnitOfWork;
+using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace CRMCQRS.UI.Pages.Tags;
 
@@ -11,54 +22,58 @@ public partial class Index
     private ISnackbar _snackbar { get; set; }
 
     [Inject]
-    private IDialogService _dialogService { get; set; }
-
-    private IList<TagModel> _tagList = new List<TagModel>();
-    private MudForm _form;
-    public MetaData _metaData { get; set; } = new MetaData();
-    private PageParameters _paginationParameters = new PageParameters();
-    private IRepository<Tag> _tagRepository { get; set; }
+    private HttpClient _httpClient { get; set; }
 
     [Inject]
-    private IUnitOfWork _unitOfWork { get; set; }
+    private IDialogService _dialogService { get; set; }
 
+    private IPagedList<TagViewModel> _pagedList { get; set; }
+    private MudForm _form;
 
     protected override async Task OnInitializedAsync()
     {
-        _tagRepository = _unitOfWork.GetRepository<Tag>();
         await GetTags();
     }
 
     private async Task SelectedPage(int page)
     {
-        _paginationParameters.PageNumber = page;
+        _pagedList.PageIndex = page;
         await GetTags();
     }
 
     private async Task GetTags()
     {
-        var tagPagedList = await _tagRepository.GetPagedListAsync(pageSize: _paginationParameters.PageSize,
-            pageIndex: _paginationParameters.PageNumber - 1, disableTracking: true);
-        var modelList = TagModel.FromEntitiesList(tagPagedList.Items);
-        var pagedList = new PagedList<TagModel>(modelList, tagPagedList.TotalCount,
-            _paginationParameters.PageNumber,
-            _paginationParameters.PageSize);
-        _tagList = modelList;
-        _metaData = pagedList.MetaData;
+        var response =
+            await _httpClient.PostAsJsonAsync<GetPageTagDto>("Tags/GetPage", 
+                new GetPageTagDto("", _pagedList.PageIndex));
+        
+        if (!response.IsSuccessStatusCode)
+        {
+            _snackbar.Add(NotificationMessages.ErrorFromGet, Severity.Error);
+            return;
+        }
+        _pagedList = await response.Content.ReadFromJsonAsync<IPagedList<TagViewModel>>();
     }
 
     private async Task DeleteTag(Guid id)
     {
-        _tagRepository.Delete(id);
-        await _unitOfWork.SaveChangesAsync();
-        if (_unitOfWork.LastSaveChangesResult.IsOk)
+        var response = await _httpClient.GetAsync($"Tags/Delete/{id}");
+        if (!response.IsSuccessStatusCode)
         {
-            _snackbar.Add("Данные удалены", Severity.Success);
+            _snackbar.Add(NotificationMessages.ErrorFromGet, Severity.Error);
+            return;
+        }
+        bool result = await response.Content.ReadFromJsonAsync<bool>();
+        if (result)
+        {
+            _snackbar.Add(NotificationMessages.SuccessDelete, Severity.Success);
             _navigationManager.NavigateTo("tags", true);
+            return;
         }
         else
         {
-            _snackbar.Add("Ошибка при удаление", Severity.Error);
+            _snackbar.Add(NotificationMessages.ErrorFromDelete, Severity.Error);
+            return;
         }
     }
 
@@ -69,18 +84,18 @@ public partial class Index
         _dialogService.Show<CreateTagDialog>("Создание тега", closeOnEscapeKey);
     }
 
-    private async Task StartedEditingItem(TagModel item)
+    private async Task StartedEditingItem(TagViewModel item)
     {
         DialogOptions closeOnEscapeKey = new DialogOptions() { CloseOnEscapeKey = true };
         var parameters = new DialogParameters { ["_model"] = item };
         _dialogService.Show<CreateTagDialog>("Редактирование тега", parameters, closeOnEscapeKey);
     }
 
-    void CanceledEditingItem(TagModel item)
+    void CanceledEditingItem(TagViewModel item)
     {
     }
 
-    void CommittedItemChanges(TagModel item)
+    void CommittedItemChanges(TagViewModel item)
     {
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Net.Http.Json;
+using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace CRMCQRS.UI.Pages.Users;
 
@@ -23,7 +25,6 @@ public partial class Login
     private HttpClient Client { get; set; }
 
     private MudForm Form;
-    private LoginModelFluentValidator LoginModelValidator = new();
     private LoginModel Model { get; set; } = new();
 
     protected override async Task OnInitializedAsync()

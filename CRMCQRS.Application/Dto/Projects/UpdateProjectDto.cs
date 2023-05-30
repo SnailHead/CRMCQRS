@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using CRMCQRS.API.Models.Tags;
 using CRMCQRS.Application.Common.Mappings;
 using CRMCQRS.Application.Projects.Commands.UpdateProject;
-using CRMCQRS.Application.Tags.Commands.UpdateTag;
 
-namespace CRMCQRS.API.Models.Projects;
+namespace CRMCQRS.Application.Dto.Projects;
 
 public class UpdateProjectDto: IMapWith<UpdateProjectCommand>
 {

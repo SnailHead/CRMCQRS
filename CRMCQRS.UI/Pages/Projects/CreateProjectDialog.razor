@@ -1,4 +1,6 @@
-﻿<MudForm Model="@_model" @ref="@_form" Validation="@(_projectModelValidator.ValidateValue)" ValidationDelay="0">
+﻿@using Microsoft.AspNetCore.Components
+@using MudBlazor
+<MudForm Model="@_model" @ref="@_form" Validation="@(_projectModelValidator.ValidateValue)" ValidationDelay="0">
     <MudDialog>
         <DialogContent>
             <MudGrid>

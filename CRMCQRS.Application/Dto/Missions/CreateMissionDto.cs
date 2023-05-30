@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using CRMCQRS.Application.Common.Mappings;
 using CRMCQRS.Application.Missions.Commands.CreateMission;
-using CRMCQRS.Application.Projects.Commands.CreateProject;
 using CRMCQRS.Domain.Common.Enums;
 
-namespace CRMCQRS.API.Models.Missions;
+namespace CRMCQRS.Application.Dto.Missions;
 
 public class CreateMissionDto : IMapWith<CreateMissionCommand>
 {

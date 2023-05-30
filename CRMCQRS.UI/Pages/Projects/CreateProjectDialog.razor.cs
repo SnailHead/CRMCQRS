@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using CRMCQRS.Domain;
+using CRMCQRS.Infrastructure.Repository;
+using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace CRMCQRS.UI.Pages.Projects;
 
@@ -6,8 +9,6 @@ public partial class CreateProjectDialog
 {
     [Inject]
     private NavigationManager _navigationManager { get; set; }
-    [Inject]
-    private IUnitOfWork _unitOfWork { get; set; }
     [Inject]
     private ISnackbar _snackbar { get; set; }
 

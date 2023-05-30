@@ -24,4 +24,8 @@
       <ProjectReference Include="..\CRMCQRS.Application\CRMCQRS.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Models" />
+    </ItemGroup>
+
 </Project>

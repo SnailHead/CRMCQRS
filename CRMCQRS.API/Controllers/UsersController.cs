@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CRMCQRS.API.Models.Users;
+using CRMCQRS.Application.Dto.Users;
 using CRMCQRS.Application.Users.Commands.CreateUser;
 using CRMCQRS.Application.Users.Commands.DeleteUser;
 using CRMCQRS.Application.Users.Commands.UpdateUser;
@@ -20,11 +20,11 @@ public class UsersController : BaseController
     public UsersController(IMapper mapper) => _mapper = mapper;
 
     [HttpPost]
-    [Route("GetAll")]
+    [Route("GetPage")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<IPagedList<UserViewModel>>> GetAll([FromBody] GetPageUserDto request)
+    public async Task<ActionResult<IPagedList<UserViewModel>>> GetPage([FromBody] GetPageUserDto request)
     {
 
         var query = _mapper.Map<GetPageUserQuery>(request);

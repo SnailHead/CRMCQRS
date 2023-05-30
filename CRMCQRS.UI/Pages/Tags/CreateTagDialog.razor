@@ -1,5 +1,7 @@
-﻿
-<MudForm Model="@_model" @ref="@_form" Validation="@(_tagModelValidator.ValidateValue)" ValidationDelay="0">
+﻿@using Microsoft.AspNetCore.Components
+@using MudBlazor
+
+<MudForm Model="@_model" @ref="@_form" Validation="@(_validator.ValidateValue)" ValidationDelay="0">
     <MudDialog>
         <DialogContent>
             <MudGrid>
@@ -7,14 +9,13 @@
                     <MudTextField @bind-Value="_model.Title" For="@(() => _model.Title)" Immediate="true"/>
                 </MudItem>
                 <MudItem md="12" sm="12" xs="12">
-                    
+
                 </MudItem>
                 <MudItem md="12" sm="12" xs="12">
                     <MudSwitch @bind-Checked="@_model.IsFilled" For="@(() => _model.IsFilled)"/>
                 </MudItem>
-                <MudTextField @bind-Value="_model.Id" DisableUnderLine="true" For="@(() => _model.Id)" Immediate="true" InputType="InputType.Hidden" Label="@null"/>
                 <MudItem Class="d-flex flex-grow-1 gap-4 justify-center" md="12" sm="12" xs="12">
-                    <MudColorPicker ValueChanged="OnChangeColorPicker"  ColorPickerView="ColorPickerView.Palette" ColorPickerMode="ColorPickerMode.HEX" DisableAlpha="true" DisableInputs="true" PickerVariant="PickerVariant.Static" />
+                    <MudColorPicker ColorPickerMode="ColorPickerMode.HEX" ColorPickerView="ColorPickerView.Palette" DisableAlpha="true" DisableInputs="true" PickerVariant="PickerVariant.Static" ValueChanged="OnChangeColorPicker"/>
                 </MudItem>
             </MudGrid>
 

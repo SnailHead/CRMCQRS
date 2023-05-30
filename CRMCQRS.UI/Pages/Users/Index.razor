@@ -1,6 +1,10 @@
 ﻿@page "/users"
 @using MedOk.Extensions.Identity
-@attribute [Authorize(Roles = UserRoles.Admin)]
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components
+@using CRMCQRS.Infrastructure.Policies
+@using MudBlazor
+@attribute [Authorize(Policy = $"{Policy.Developer},{Policy.Admin},{Policy.DepartmentHead}")]
 
 <MudPaper Elevation="25">
     <MudToolBar>

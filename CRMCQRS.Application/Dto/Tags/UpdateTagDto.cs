@@ -2,7 +2,7 @@
 using CRMCQRS.Application.Common.Mappings;
 using CRMCQRS.Application.Tags.Commands.UpdateTag;
 
-namespace CRMCQRS.API.Models.Tags;
+namespace CRMCQRS.Application.Dto.Tags;
 
 public class UpdateTagDto : IMapWith<UpdateTagCommand>
 {

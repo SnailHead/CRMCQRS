@@ -1,6 +1,8 @@
 ﻿@page "/users/{Id:guid?}"
-@using MedOk.Extensions.Identity
-@attribute [Authorize(Roles = UserRoles.Admin)]
+@using Microsoft.AspNetCore.Authorization
+@using CRMCQRS.Infrastructure.Policies
+@using MudBlazor
+@attribute [Authorize(Policy = $"{Policy.Developer},{Policy.Admin},{Policy.DepartmentHead}")]
 
 <PageTitle>Пользователи</PageTitle>
 
@@ -13,7 +15,7 @@
                         <MudText Class="ma-2" Typo="Typo.h5">@_model.Firstname @_model.Lastname</MudText>
                         <MudButton OnClick="OpenDialog">Изменить</MudButton>
                     </MudItem>
-                    <MudText Class="ma-2">Зарегистриован: @_model.RegistrationDate.ToShortDateString()</MudText>
+                    <MudText Class="ma-2">в: @_model.RegistrationDate.ToShortDateString()</MudText>
                     <MudText Class="ma-2">
                         <MudIcon Class="mr-1" Icon="@Icons.Material.Filled.PlaylistAddCheck"/>Задач всего: @_totalTasks
                     </MudText>

@@ -2,7 +2,7 @@
 using CRMCQRS.Application.Missions.Commands.UpdateMission;
 using CRMCQRS.Domain.Common.Enums;
 
-namespace CRMCQRS.API.Models.Missions;
+namespace CRMCQRS.Application.Dto.Missions;
 
 public class UpdateMissionDto : IMapWith<UpdateMissionCommand>
 {

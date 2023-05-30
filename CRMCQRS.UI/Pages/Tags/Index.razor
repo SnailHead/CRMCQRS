@@ -1,8 +1,9 @@
 ﻿@page "/tags"
-@using CRM.Models
-@using MedOk.Extensions.Identity
+@using CRMCQRS.Application.Tags.Queries
+@using CRMCQRS.Infrastructure.Policies
 @using Microsoft.AspNetCore.Authorization
-@attribute [Authorize(Roles = UserRoles.Admin)]
+@using MudBlazor
+@attribute [Authorize(Policy = $"{Policy.Developer},{Policy.Admin},{Policy.DepartmentHead}")]
 
 <PageTitle>Теги</PageTitle>
 <MudText Align="Align.Center" Class="m-2" Typo="Typo.h5">Теги</MudText>
@@ -10,37 +11,30 @@
     <MudButton Color="Color.Primary" OnClick="OpenDialog" Variant="Variant.Filled">Добавить</MudButton>
 </MudItem>
 
-@if (_metaData.TotalPages > 1)
+@if (_pagedList.TotalPages > 1)
 {
     <div class="align-center d-flex flex-column">
-        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_metaData.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
+        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_pagedList.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
     </div>
 }
 
-
-<MudDataGrid Items="@_tagList" T="TagModel">
+<MudDataGrid Items="@_pagedList.Items" T="TagViewModel">
     <Columns>
-        <Column Field="Title" Title="Название" T="TagModel"/>
-        <Column Field="Color" Title="Цвет" T="TagModel">
+        <PropertyColumn Property="x => x.Title" Title="Название"/>
+        <TemplateColumn T="TagViewModel" Title="Цвет">
             <CellTemplate>
-                <MudIcon Size="Size.Large" Icon="@Icons.Material.Filled.Label" Style="@($"color: {context.Item.Color}")"/>
+                <MudIcon Icon="@Icons.Material.Filled.Label" Size="Size.Large" Style="@($"color: {context.Item.Color}")"/>
             </CellTemplate>
-        </Column>
-        <Column CellClass="d-flex justify-end" T="TagModel">
+        </TemplateColumn>
+        <TemplateColumn CellClass="d-flex justify-end">
             <CellTemplate>
-                <MudTooltip  Text="Изменить">
+                <MudTooltip Text="Изменить">
                     <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => StartedEditingItem(context.Item))"/>
                 </MudTooltip>
                 <MudTooltip Text="Удалить">
                     <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteTag(context.Item.Id))"/>
                 </MudTooltip>
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
     </Columns>
 </MudDataGrid>
-@if (_metaData.TotalPages > 1)
-{
-    <MudItem Class="align-center d-flex flex-column">
-        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_metaData.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
-    </MudItem>
-}

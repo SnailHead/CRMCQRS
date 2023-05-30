@@ -1,6 +1,8 @@
 ﻿@page "/tasks/view/{Id:guid?}"
 @using MedOk.Extensions.Identity
-@attribute [Authorize(Roles = UserRoles.Admin)]
+@using Microsoft.AspNetCore.Authorization
+@using CRMCQRS.Infrastructure.Policies
+@attribute [Authorize(Policy = $"{Policy.Developer},{Policy.Admin},{Policy.DepartmentHead}")]
 
 <PageTitle>Задачи</PageTitle>
 <MudGrid>

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CRMCQRS.API.Models.Projects;
+using CRMCQRS.Application.Dto.Projects;
 using CRMCQRS.Application.Projects.Commands.CreateProject;
 using CRMCQRS.Application.Projects.Commands.DeleteProject;
 using CRMCQRS.Application.Projects.Commands.UpdateProject;
@@ -20,11 +20,11 @@ public class ProjectsController : BaseController
     public ProjectsController(IMapper mapper) => _mapper = mapper;
 
     [HttpPost]
-    [Route("GetAll")]
+    [Route("GetPage")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<IPagedList<ProjectViewModel>>> GetAll([FromBody] GetPageProjectDto request)
+    public async Task<ActionResult<IPagedList<ProjectViewModel>>> GetPage([FromBody] GetPageProjectDto request)
     {
         var query = _mapper.Map<GetPageProjectQuery>(request);
         var vm = await Mediator.Send(query);

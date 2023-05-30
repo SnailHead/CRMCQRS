@@ -4,7 +4,7 @@
     {
         int IndexFrom { get; }
 
-        int PageIndex { get; }
+        int PageIndex { set; get; }
 
         int PageSize { get; }
 
