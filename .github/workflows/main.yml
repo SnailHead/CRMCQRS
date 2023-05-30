@@ -2,7 +2,7 @@ name: 'build and deploy server'
 on:
     push:
         paths:
-            - '/**'
+            - '/'
             - '**/main.yml'
     release:
         types: [ published ]
