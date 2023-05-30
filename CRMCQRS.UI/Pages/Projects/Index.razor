@@ -11,7 +11,7 @@
     <MudButton Color="Color.Primary" OnClick="OpenDialog" Variant="Variant.Filled">Добавить</MudButton>
 </MudItem>
 
-<MudExpansionPanels>
+@*<MudExpansionPanels>
     <MudExpansionPanel MaxHeight="150" Text="Параметры поиска">
         <MudForm Model="@_filterModel" @ref="@_form">
             <MudGrid>
@@ -25,17 +25,17 @@
             </MudGrid>
         </MudForm>
     </MudExpansionPanel>
-</MudExpansionPanels>
+</MudExpansionPanels>*@
 
-@if (_metaData.TotalPages > 1)
+@if (_pagedList.TotalPages > 1)
 {
     <div class="align-center d-flex flex-column">
-        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_metaData.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
+        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_pagedList.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
     </div>
 }
 
 <MudGrid>
-    @foreach (var item in _projectList)
+    @foreach (var item in _pagedList.Items)
     {
         <MudItem md="6" sm="12" xs="12">
             <MudLink Underline="Underline.None" Href="@($"projects/{item.Id}")">
@@ -63,9 +63,9 @@
         </MudItem>
     }
 </MudGrid>
-@if (_metaData.TotalPages > 1)
+@if (_pagedList.TotalPages > 1)
 {
     <div class="align-center d-flex flex-column">
-        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_metaData.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
+        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_pagedList.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
     </div>
 }

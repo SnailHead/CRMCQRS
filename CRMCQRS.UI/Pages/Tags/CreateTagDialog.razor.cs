@@ -57,6 +57,7 @@ public partial class CreateTagDialog
             return;
         }
         
+        _snackbar.Add(NotificationMessages.SuccessCreate, Severity.Success);
         _navigationManager.NavigateTo("tags", true);
     }
 

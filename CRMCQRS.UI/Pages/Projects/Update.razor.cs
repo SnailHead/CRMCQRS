@@ -1,7 +1,7 @@
-﻿using CRMCQRS.Domain;
-using CRMCQRS.Domain.Common.Enums;
-using CRMCQRS.Infrastructure.Repository;
-using CRMCQRS.Infrastructure.UnitOfWork;
+﻿using System.Net.Http.Json;
+using CRMCQRS.Application.Notification;
+using CRMCQRS.Application.Projects.Queries;
+using CRMCQRS.Application.Validators.Projects;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -14,40 +14,28 @@ public partial class Update
 
     [Inject]
     private ISnackbar _snackbar { get; set; }
+    [Inject]
+    private HttpClient _httpClient { get; set; }
 
     [Inject]
     private IDialogService _dialogService { get; set; }
 
     private MudForm _form;
-    private ProjectModel _model { get; set; } = new();
-    private ProjectModelFluentValidator _projectModelValidator = new();
+    private ProjectViewModel _model { get; set; } = new();
 
     [Parameter]
     public Guid? Id { get; set; }
 
-    private int _totalTasks { get; set; }
-    private int _tasksCompleted { get; set; }
-    private int _tasksInProgress { get; set; }
-    private IRepository<Project> _projectRepository { get; set; }
-
-    [Inject]
-    private IUnitOfWork _unitOfWork { get; set; }
-
     protected override async Task OnInitializedAsync()
     {
-        _projectRepository = _unitOfWork.GetRepository<Project>();
-        if (Id.HasValue)
+        var response = await _httpClient.GetAsync($"Projects/{Id}");
+        if (!response.IsSuccessStatusCode)
         {
-            var entity = await _projectRepository.GetFirstOrDefaultAsync(disableTracking:true,
-                predicate: item => item.Id == Id, 
-                include: proj => proj.Include(i => i.Missions)
-                    .Include(i => i.Tags)
-                    .ThenInclude(i=> i.Tag));
-            _model = ProjectModel.FromEntity(entity);
-            _totalTasks = _model.Missions.Count;
-            _tasksInProgress = _model.Missions.Count(item => item.Status != MissionStatus.Complete);
-            _tasksCompleted = _model.Missions.Count(item => item.Status == MissionStatus.Complete);
+            _snackbar.Add(NotificationMessages.ErrorFromGet, Severity.Error);
+            return;
         }
+
+        _model = await response.Content.ReadFromJsonAsync<ProjectViewModel>();
     }
 
     private void OpenDialog()

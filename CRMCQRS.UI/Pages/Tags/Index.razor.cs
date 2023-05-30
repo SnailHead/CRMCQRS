@@ -1,13 +1,8 @@
 ﻿using System.Net.Http.Json;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using CRMCQRS.Application.Dto.Tags;
 using CRMCQRS.Application.Notification;
 using CRMCQRS.Application.Tags.Queries;
-using CRMCQRS.Domain;
 using CRMCQRS.Infrastructure.Pages;
-using CRMCQRS.Infrastructure.Repository;
-using CRMCQRS.Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 

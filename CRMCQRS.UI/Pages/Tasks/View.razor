@@ -1,5 +1,4 @@
 ﻿@page "/tasks/view/{Id:guid?}"
-@using MedOk.Extensions.Identity
 @using Microsoft.AspNetCore.Authorization
 @using CRMCQRS.Infrastructure.Policies
 @attribute [Authorize(Policy = $"{Policy.Developer},{Policy.Admin},{Policy.DepartmentHead}")]

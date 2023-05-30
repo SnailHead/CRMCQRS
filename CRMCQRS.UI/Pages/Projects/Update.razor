@@ -17,13 +17,13 @@
                     </MudItem>
                     <MudText Class="ma-2">Создано: @_model.CreationDate.ToShortDateString()</MudText>
                     <MudText Class="ma-2">
-                        <MudIcon Class="mr-1" Icon="@Icons.Material.Filled.PlaylistAddCheck"/>Задач всего: @_totalTasks
+                        <MudIcon Class="mr-1" Icon="@Icons.Material.Filled.PlaylistAddCheck"/>Задач всего: @_model.TotalTasks
                     </MudText>
                     <MudText Class="ma-2">
-                        <MudIcon Class="mr-1" Icon="@Icons.Material.Filled.DoneAll"/>Задач выполнено: @_tasksCompleted
+                        <MudIcon Class="mr-1" Icon="@Icons.Material.Filled.DoneAll"/>Задач выполнено: @_model.TasksCompleted
                     </MudText>
                     <MudText Class="ma-2">
-                        <MudIcon Class="mr-1" Icon="@Icons.Material.Filled.EditNote"/>Задач в работе: @_tasksInProgress
+                        <MudIcon Class="mr-1" Icon="@Icons.Material.Filled.EditNote"/>Задач в работе: @_model.TasksInProgress
                     </MudText>
                 </MudPaper>
             </MudItem>
@@ -38,7 +38,7 @@
                                 <MudIcon Icon="@Icons.Material.Filled.Add"/>Создать
                             </MudButton>
                         </MudItem>
-                        @if (_model.Missions == null || _model.Missions.Count == 0)
+                        @*@if (_model.Missions == null || _model.Missions.Count == 0)
                         {
                             <MudItem Class="align-items-center d-flex flex-column" md="12" sm="12" xs="12">
                                 <MudText Class="ma-2" Typo="Typo.h5">
@@ -55,7 +55,7 @@
                                     <MudText>@item.StartDate.ToLongDateString() / @(item.EndDate.HasValue ? item.EndDate.Value.ToLongDateString() : "бессрочно") </MudText>
                                 }
                             </MudItem>
-                        }
+                        }*@
                     </MudGrid>
 
                 </MudPaper>

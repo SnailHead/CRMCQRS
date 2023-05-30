@@ -8,7 +8,6 @@ public class CreateProjectDto : IMapWith<CreateProjectCommand>
 {
     public string Title { get; set; }
     public string? Info { get; set; }
-    public Guid UserId { get; set; }
     public List<Guid> TagIds { get; set; }
 
     public void Mapping(Profile profile)

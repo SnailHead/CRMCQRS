@@ -13,6 +13,6 @@ public class UserViewModel : IMapWith<User>
     
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<UserViewModel, User>();
+        profile.CreateMap<User, UserViewModel>();
     }
 }

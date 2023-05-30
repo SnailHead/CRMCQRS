@@ -1,6 +1,5 @@
 ﻿@page "/tasks"
-@using MedOk.Extensions.Enums
-@using MedOk.Extensions.Identity
+@using MudBlazor
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components
 @using CRMCQRS.Infrastructure.Policies
@@ -12,7 +11,7 @@
     <MudButton Color="Color.Primary" OnClick="OpenDialog" Variant="Variant.Filled">Добавить</MudButton>
 </MudItem>
 
-<MudExpansionPanels>
+@*<MudExpansionPanels>
     <MudExpansionPanel MaxHeight="150" Text="Параметры поиска">
         <MudForm Model="@_filterModel" @ref="@_form">
             <MudGrid>
@@ -26,17 +25,17 @@
             </MudGrid>
         </MudForm>
     </MudExpansionPanel>
-</MudExpansionPanels>
+</MudExpansionPanels>*@
 
-@if (_metaData.TotalPages > 1)
+@if (_pagedList.TotalPages > 1)
 {
     <div class="align-center d-flex flex-column">
-        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_metaData.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
+        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_pagedList.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
     </div>
 }
 
 <MudGrid>
-    @foreach (var item in _taskList)
+    @foreach (var item in _pagedList.Items)
     {
         <MudItem md="12" sm="12" xs="12">
             <MudLink Href="@($"tasks/view/{item.Id}")" Underline="Underline.None">
@@ -67,9 +66,3 @@
         </MudItem>
     }
 </MudGrid>
-@if (_metaData.TotalPages > 1)
-{
-    <div class="align-center d-flex flex-column">
-        <MudPagination BoundaryCount="2" Class="mt-4" Count="@_metaData.TotalPages" MiddleCount="5" SelectedChanged="SelectedPage"/>
-    </div>
-}

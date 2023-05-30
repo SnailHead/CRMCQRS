@@ -4,6 +4,7 @@ using CRMCQRS.Infrastructure.Pages;
 using CRMCQRS.Infrastructure.Repository;
 using CRMCQRS.Infrastructure.UnitOfWork;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace CRMCQRS.Application.Projects.Queries.GetPageProject;
 
@@ -17,8 +18,8 @@ public class GetPageProjectQueryHandler : IRequestHandler<GetPageProjectQuery, I
 
     public GetPageProjectQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        _unitOfWork = unitOfWork ?? throw new NullReferenceException("Parameter unitOfWork is null");
-        _mapper = mapper ?? throw new NullReferenceException("Parameter mapper is null");
+        _unitOfWork = unitOfWork ?? throw new ArgumentNullException("unitOfWork", "Parameter unitOfWork is null");
+        _mapper = mapper ?? throw new ArgumentNullException("mapper", "Parameter mapper is null");
         _projectRepository = _unitOfWork.GetRepository<Project>();
     }
 
@@ -26,8 +27,11 @@ public class GetPageProjectQueryHandler : IRequestHandler<GetPageProjectQuery, I
         CancellationToken cancellationToken)
     {
         var projects =
-            await _projectRepository.GetPagedListAsync(predicate: request.GetExpression(request), pageIndex: request.Page,
-                disableTracking: true, cancellationToken: cancellationToken, 
+            await _projectRepository.GetPagedListAsync(predicate: request.GetExpression(request),
+                pageIndex: request.Page,
+                disableTracking: true, cancellationToken: cancellationToken,
+                include: item => item.Include(x => x.Tags).ThenInclude(x => x.Tag)
+                    .Include(x => x.Missions),
                 selector: item => _mapper.Map<ProjectViewModel>(item));
 
         return projects;

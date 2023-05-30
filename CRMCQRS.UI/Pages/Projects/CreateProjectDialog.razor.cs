@@ -1,5 +1,8 @@
-﻿using CRMCQRS.Domain;
-using CRMCQRS.Infrastructure.Repository;
+﻿using System.Net.Http.Json;
+using CRMCQRS.Application.Dto.Projects;
+using CRMCQRS.Application.Notification;
+using CRMCQRS.Application.Tags.Queries;
+using CRMCQRS.Application.Validators.Projects;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -11,32 +14,27 @@ public partial class CreateProjectDialog
     private NavigationManager _navigationManager { get; set; }
     [Inject]
     private ISnackbar _snackbar { get; set; }
+    [Inject]
+    private HttpClient _httpClient { get; set; }
 
     [CascadingParameter]
     private MudDialogInstance _mudDialog { get; set; }
 
     private MudForm _form;
-    private IList<Tag> _tags { get; set; } = new List<Tag>();
+    private List<TagViewModel> _tags { get; set; } = new();
     private IEnumerable<string> _selectedTags { get; set; } = new HashSet<string>();
 
     [Parameter]
-    public ProjectModel _model { get; set; } = new();
+    public CreateProjectDto _model { get; set; } = new();
 
-    private ProjectModelFluentValidator _projectModelValidator = new();
-    private IRepository<Tag> _tagRepository { get; set; }
-    private IRepository<ProjectTag> _projectTagRepository { get; set; }
-    private IRepository<Project> _projectRepository { get; set; }
+    private CreateProjectDtoValidator _validator = new();
 
     protected override async Task OnInitializedAsync()
     {
-        _tagRepository = _unitOfWork.GetRepository<Tag>();
-        _projectTagRepository = _unitOfWork.GetRepository<ProjectTag>();
-        _projectRepository = _unitOfWork.GetRepository<Project>();
-        _tags = await _tagRepository.GetAllAsync(disableTracking: false);
-        if (_model.TagNames != null)
+        var response = await _httpClient.GetAsync("tags/get-select");
+        if (!response.IsSuccessStatusCode)
         {
-            _selectedTags =
-                new HashSet<string>(_model.TagNames.Split(",", StringSplitOptions.RemoveEmptyEntries).ToList());
+            _tags = await response.Content.ReadFromJsonAsync<List<TagViewModel>>();
         }
     }
 
@@ -45,33 +43,19 @@ public partial class CreateProjectDialog
     private async Task Submit()
     {
         await _form.Validate();
-        
-        if (_form.IsValid)
+        if (!_form.IsValid)
         {
-            if (_model.Id == Guid.Empty)
-            {
-                var entity = ProjectModel.ToEntity(_model);
-                entity.Tags = (await _tagRepository.GetAllAsync(predicate: item => _model.TagNames.Contains(item.Title), 
-                    selector:item => new ProjectTag(){ProjectsId = entity.Id, TagsId = item.Id})).ToList();
-                await _projectRepository.InsertAsync(entity);
-            }
-               
-            else
-            {
-                var entity = ProjectModel.ToEntity(_model);
-                
-                entity.Tags = (await _tagRepository.GetAllAsync(predicate: item => _model.TagNames.Contains(item.Title), 
-                    selector:item => new ProjectTag(){ProjectsId = entity.Id, TagsId = item.Id})).ToList();
-                var projectTags =
-                    await _projectTagRepository.GetAllAsync(predicate: item => item.ProjectsId == _model.Id, disableTracking: true);
-                _projectTagRepository.UpdateRelated(projectTags.ToList(),entity.Tags, 
-                    (oldItem, newItem) =>  oldItem.ProjectsId == newItem.ProjectsId && oldItem.TagsId == newItem.TagsId);
-                _projectRepository.Update(entity);
-            }
-            
-            await _unitOfWork.SaveChangesAsync();
-            _snackbar.SendAfterSave(_unitOfWork.LastSaveChangesResult.IsOk);
-            _navigationManager.NavigateTo("projects", true);
+            _snackbar.Add(NotificationMessages.FormValidationFail, Severity.Warning);
+            return;
         }
+
+        var response = await _httpClient.PostAsJsonAsync("Projects/Create", _model);
+        if (!response.IsSuccessStatusCode)
+        {
+            _snackbar.Add(NotificationMessages.ErrorFromCreate, Severity.Error);
+            return;
+        }
+        _snackbar.Add(NotificationMessages.SuccessCreate, Severity.Success);
+        _navigationManager.NavigateTo("tags", true);
     }
 }

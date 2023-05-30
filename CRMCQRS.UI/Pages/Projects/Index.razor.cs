@@ -1,4 +1,8 @@
-﻿using CRMCQRS.Domain;
+﻿using System.Net.Http.Json;
+using CRMCQRS.Application.Dto.Projects;
+using CRMCQRS.Application.Notification;
+using CRMCQRS.Application.Projects.Queries;
+using CRMCQRS.Domain;
 using CRMCQRS.Infrastructure.Pages;
 using CRMCQRS.Infrastructure.Repository;
 using CRMCQRS.Infrastructure.UnitOfWork;
@@ -17,40 +21,32 @@ public partial class Index
 
     [Inject]
     private IDialogService _dialogService { get; set; }
-
-    private List<ProjectStatisticModel> _projectList = new();
-    private ProjectFilterModel _filterModel = new();
-    private MudForm _form;
-    public MetaData _metaData { get; set; } = new MetaData();
-    private PageParameters _paginationParameters = new PageParameters();
-    private IRepository<Project> _projectRepository { get; set; }
-
     [Inject]
-    private IUnitOfWork _unitOfWork { get; set; }
+    private HttpClient _httpClient { get; set; }
+
+    private IPagedList<ProjectViewModel> _pagedList { get; set; }
+    private MudForm _form;
 
     protected override async Task OnInitializedAsync()
     {
-        _projectRepository = _unitOfWork.GetRepository<Project>();
         await GetProjects();
     }
 
     private async Task SelectedPage(int page)
     {
-        _paginationParameters.PageNumber = page;
+        _pagedList.PageIndex = page;
         await GetProjects();
     }
 
     private async Task GetProjects()
     {
-        var projectPagedList = await _projectRepository.GetPagedListAsync(pageSize: _paginationParameters.PageSize,
-            pageIndex: _paginationParameters.PageNumber - 1, disableTracking: true,
-            predicate: ProjectFilterModel.GetExpression(_filterModel));
-        _projectList =  ProjectStatisticModel.FromEntitiesList(projectPagedList.Items.ToList());
-        
-        var pagedList = new PagedList<ProjectStatisticModel>(_projectList, projectPagedList.TotalCount,
-            _paginationParameters.PageNumber,
-            _paginationParameters.PageSize);
-        _metaData = pagedList.MetaData;
+        var response = await _httpClient.PostAsJsonAsync("Projects/GetPage", new GetPageProjectDto("", _pagedList.PageIndex));
+        if (!response.IsSuccessStatusCode)
+        {
+            _snackbar.Add(NotificationMessages.ErrorFromGet, Severity.Error);
+            return;
+        }
+        _pagedList = await response.Content.ReadFromJsonAsync<IPagedList<ProjectViewModel>>();
     }
 
     private void OpenDialog()
@@ -61,7 +57,6 @@ public partial class Index
 
     private async Task ClearFilter()
     {
-        _filterModel = new ProjectFilterModel();
         await GetProjects();
     }
 }

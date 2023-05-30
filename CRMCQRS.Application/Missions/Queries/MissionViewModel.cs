@@ -13,6 +13,6 @@ public class MissionViewModel : IMapWith<Mission>
     
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<MissionViewModel, Mission>();
+        profile.CreateMap<Mission, MissionViewModel>();
     }
 }

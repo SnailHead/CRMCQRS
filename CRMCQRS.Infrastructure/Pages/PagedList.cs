@@ -2,7 +2,7 @@
 
 public class PagedList<TSource, TResult> : IPagedList<TResult>
 {
-    public int PageIndex { get; }
+    public int PageIndex { set; get; }
     public int PageSize { get; }
     public int TotalCount { get; }
     public int TotalPages { get; }
@@ -60,7 +60,7 @@ public class PagedList<TSource, TResult> : IPagedList<TResult>
 
 public class PagedList<T> : IPagedList<T>
 {
-    public int PageIndex { get; init; }
+    public int PageIndex { get; set; }
     public int PageSize { get; init; }
     public int TotalCount { get; init; }
     public int TotalPages { get; init; }
