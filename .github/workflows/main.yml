@@ -50,5 +50,7 @@ jobs:
                     port: ${{ secrets.SERVER_PORT }}
                     passphrase : ${{ secrets.PASSPHRASE }}
                     script: |
+                        pwd
+                        ls -a
                         sudo docker compose pull
                         sudo docker compose up -d
