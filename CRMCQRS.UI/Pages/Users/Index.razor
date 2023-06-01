@@ -1,8 +1,8 @@
 ﻿@page "/users"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components
-@using CRMCQRS.Infrastructure.Policies
 @using MudBlazor
+@using CRMCQRS.Infrastructure.Authentication.Policies
 @attribute [Authorize(Policy = $"{Policy.Developer},{Policy.Admin},{Policy.DepartmentHead}")]
 
 <MudPaper Elevation="25">

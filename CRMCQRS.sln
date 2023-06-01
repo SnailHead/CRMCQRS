@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRMCQRS.Infrastructure", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRMCQRS.Application", "CRMCQRS.Application\CRMCQRS.Application.csproj", "{C3BD7730-3270-4DE8-AD03-A9AC3D16BBA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRMCQRS.Identity", "CRMCQRS.Identity\CRMCQRS.Identity.csproj", "{47E58F40-BA02-4396-99AB-06FE0D916B50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{C3BD7730-3270-4DE8-AD03-A9AC3D16BBA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3BD7730-3270-4DE8-AD03-A9AC3D16BBA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3BD7730-3270-4DE8-AD03-A9AC3D16BBA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47E58F40-BA02-4396-99AB-06FE0D916B50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47E58F40-BA02-4396-99AB-06FE0D916B50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47E58F40-BA02-4396-99AB-06FE0D916B50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47E58F40-BA02-4396-99AB-06FE0D916B50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

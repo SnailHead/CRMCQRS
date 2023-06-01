@@ -2,6 +2,7 @@
 using CRMCQRS.Infrastructure.Database.Configuration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using OpenIddict.EntityFrameworkCore.Models;
 
 namespace CRMCQRS.Infrastructure.Database;
 
@@ -23,6 +24,12 @@ public class DefaultDbContext : IdentityDbContext<
     public virtual DbSet<OfficeTimer> OfficeTimers { get; set; }
     public virtual DbSet<ProjectTag> ProjectTag { get; set; }
     public virtual DbSet<Tag> Tags { get; set; }
+    public virtual DbSet<Permission> Permissions { get; set; }
+    public virtual DbSet<OpenIddictApplication> OpenIddictApplications { get; set; }
+    public virtual DbSet<OpenIddictAuthorization> OpenIddictAuthorizations { get; set; }
+    public virtual DbSet<OpenIddictScope> OpenIddictScopes { get; set; }
+    public virtual DbSet<OpenIddictToken> OpenIddictTokens { get; set; }
+    
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -34,7 +41,13 @@ public class DefaultDbContext : IdentityDbContext<
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder.UseOpenIddict<OpenIddictApplication,
+            OpenIddictAuthorization,
+            OpenIddictScope,
+            OpenIddictToken,
+            Guid>();
         base.OnModelCreating(builder);
         builder.ApplyConfiguration(new ProjectTagConfiguration());
     }
+    
 }

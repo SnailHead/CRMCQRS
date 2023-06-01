@@ -1,6 +1,6 @@
 ﻿@page "/tasks/view/{Id:guid?}"
 @using Microsoft.AspNetCore.Authorization
-@using CRMCQRS.Infrastructure.Policies
+@using CRMCQRS.Infrastructure.Authentication.Policies
 @attribute [Authorize(Policy = $"{Policy.Developer},{Policy.Admin},{Policy.DepartmentHead}")]
 
 <PageTitle>Задачи</PageTitle>

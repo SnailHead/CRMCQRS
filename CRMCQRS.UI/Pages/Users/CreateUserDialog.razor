@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Authorization
-@using CRMCQRS.Infrastructure.Policies
 @using MudBlazor
+@using CRMCQRS.Infrastructure.Authentication.Policies
 @attribute [Authorize(Policy = $"{Policy.Developer},{Policy.Admin},{Policy.DepartmentHead}")]
 
 <PageTitle>Пользователи</PageTitle>

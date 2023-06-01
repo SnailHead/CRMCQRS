@@ -1,4 +1,4 @@
-﻿namespace CRMCQRS.Infrastructure.Policies;
+﻿namespace CRMCQRS.Infrastructure.Authentication.Policies;
 
 public static class Policy
 {

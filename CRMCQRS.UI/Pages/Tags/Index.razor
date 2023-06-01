@@ -1,6 +1,6 @@
 ﻿@page "/tags"
 @using CRMCQRS.Application.Tags.Queries
-@using CRMCQRS.Infrastructure.Policies
+@using CRMCQRS.Infrastructure.Authentication.Policies
 @using Microsoft.AspNetCore.Authorization
 @using MudBlazor
 @attribute [Authorize(Policy = $"{Policy.Developer},{Policy.Admin},{Policy.DepartmentHead}")]
