@@ -27,10 +27,10 @@ public class User : IdentityUser<Guid>
 
     public bool IsOnline { get; set; }
     public bool IsVisible { get; set; }
+    public decimal Salary { get; set; }
     /// <summary>
     /// Application permission for policy-based authorization
     /// </summary>
     public List<Permission>? Permissions { get; set; }
     public ICollection<UserMission> Missions { get; set; }
-    public ICollection<OfficeTimer> OfficeTimers { get; set; }
 }

@@ -33,8 +33,9 @@ public partial class CreateProjectDialog
         var response = await _httpClient.GetAsync("tags/get-select");
         if (!response.IsSuccessStatusCode)
         {
-            _tags = await response.Content.ReadFromJsonAsync<List<TagViewModel>>();
         }
+        _tags = await response.Content.ReadFromJsonAsync<List<TagViewModel>>();
+
     }
 
     private void Cancel() => _mudDialog.Cancel();

@@ -1,0 +1,69 @@
+﻿@page "/users/detail/{Id:guid}"
+@using MudBlazor
+@using CRMCQRS.Infrastructure.Authentication.Policies
+@attribute [Authorize(Policy = $"{Policy.Developer},{Policy.Admin},{Policy.DepartmentHead}")]
+
+<PageTitle>Пользователи</PageTitle>
+
+<MudGrid>
+    <MudItem Class="ma-4" md="12" sm="12" xs="12">
+        <MudGrid>
+            <MudItem md="12" sm="12" xs="12">
+                <MudPaper Class="pa-4">
+                    <MudItem Class="d-flex justify-content-between" md="12" sm="12" xs="12">
+                        <MudText Class="ma-2" Typo="Typo.h5">@_model.Firstname @_model.Lastname</MudText>
+                        <MudLink Href="@("/users/update/"+_model.Id)">Изменить</MudLink>
+                    </MudItem>
+                    <MudText Class="ma-2">в: @_model.RegistrationDate.ToShortDateString()</MudText>
+                    <MudText Class="ma-2">
+                        <MudIcon Class="mr-1" Icon="@Icons.Material.Filled.PlaylistAddCheck"/>Задач всего: @_model.TotalTasks
+                    </MudText>
+                    <MudText Class="ma-2">
+                        <MudIcon Class="mr-1" Icon="@Icons.Material.Filled.DoneAll"/>Задач выполнено: @_model.TasksCompleted
+                    </MudText>
+                    <MudText Class="ma-2">
+                        <MudIcon Class="mr-1" Icon="@Icons.Material.Filled.EditNote"/>Задач в работе: @_model.TasksInProgress
+                    </MudText>
+                </MudPaper>
+            </MudItem>
+            <MudItem md="12" sm="12" xs="12">
+                <MudPaper Class="pa-4">
+                    <MudGrid>
+                        <MudItem Class="d-flex justify-content-between" md="12" sm="12" xs="12">
+                            <MudText Class="ma-2">
+                                Задачи
+                            </MudText>
+                            <MudButton>
+                                <MudIcon Icon="@Icons.Material.Filled.Add"/>Создать
+                            </MudButton>
+                        </MudItem>
+                        @if (_model.Missions == null || _model.Missions.Count == 0)
+                        {
+                            <MudItem Class="align-items-center d-flex flex-column" md="12" sm="12" xs="12">
+                                <MudText Class="ma-2" Typo="Typo.h5">
+                                    Задачи отсутствуют
+                                </MudText>
+                            </MudItem>
+                        }
+                        else
+                        {
+                            <MudItem Class="d-flex justify-content-between" md="12" sm="12" xs="12">
+                                @foreach (var item in _model.Missions)
+                                {
+                                    <MudText>@item.Title</MudText>
+                                }
+                            </MudItem>
+                        }
+                    </MudGrid>
+
+                </MudPaper>
+            </MudItem>
+
+            <MudItem md="12" sm="12" xs="12">
+                <MudPaper Class="pa-4">
+                    <MudChart ChartSeries="@_series" ChartType="ChartType.Bar" Height="350px" Width="100%" XAxisLabels="@_xAxisLabels"></MudChart>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+</MudGrid>

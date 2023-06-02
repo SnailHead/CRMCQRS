@@ -1,4 +1,5 @@
-﻿using CRMCQRS.Infrastructure.Pages;
+﻿using CRMCQRS.Application.Missions.Queries;
+using CRMCQRS.Infrastructure.Pages;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -15,7 +16,7 @@ public partial class Index
     [Inject]
     private IDialogService _dialogService { get; set; }
 
-    private IPagedList<MissionModel> _pagedList { get; set; }
+    private IPagedList<MissionViewModel> _pagedList { get; set; }
     private MudForm _form;
 
     protected override async Task OnInitializedAsync()

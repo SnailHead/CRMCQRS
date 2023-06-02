@@ -2,5 +2,5 @@
 
 public enum RoleInMission
 {
-    
+    Executor = 0
 }

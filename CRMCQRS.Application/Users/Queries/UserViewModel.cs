@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CRMCQRS.Application.Common.Mappings;
+using CRMCQRS.Application.Missions.Queries;
 using CRMCQRS.Domain;
 
 namespace CRMCQRS.Application.Users.Queries;
@@ -12,9 +13,11 @@ public class UserViewModel : IMapWith<User>
     public string? Middlename { get; set; }
     public string Email { get; set; }
     public DateTime? BirthDate { get; set; }
+    public DateTime RegistrationDate { get; set; }
     public string Password { get; set; }
     public int DepartmentId { get; set; }
     public long TelegramChatId { get; set; }
+    public List<MissionViewModel> Missions { get; set; }
     
     public void Mapping(Profile profile)
     {

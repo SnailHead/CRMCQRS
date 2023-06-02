@@ -5,3 +5,27 @@
         @Body
     </Article>
 </Main>
+
+@inject NavigationManager NavigationManager
+@inject IHttpContextAccessor Accessor
+@inject AuthenticationStateProvider AuthState
+@code{ 
+
+    private bool _isAuthenticated = false;
+    [CascadingParameter] protected Task<AuthenticationState> AuthStat { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var _authState = await AuthStat;
+        var _user = _authState.User;
+        var a =Accessor.HttpContext.User.Identity.IsAuthenticated;
+        var authState = await AuthState.GetAuthenticationStateAsync();
+        _isAuthenticated = authState.User.Identity.IsAuthenticated;
+        var user = authState.User;
+        string? name = user.Identity.Name;
+        if (!_isAuthenticated)
+        {
+            NavigationManager.NavigateTo($"https://localhost:20001/api/connect/authorize?client_id=CRMCQRS-Identity-ID&redirect_uri=https%3A%2F%2Flocalhost%3A5001&scope=openid&response_type=code&response_mode=query&state=2z2zny1as0f&nonce=tcb8f587ed");
+        }
+    }
+}

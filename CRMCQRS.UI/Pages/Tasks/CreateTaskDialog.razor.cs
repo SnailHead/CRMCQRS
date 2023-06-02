@@ -1,4 +1,6 @@
-﻿using CRMCQRS.Application.Notification;
+﻿using CRMCQRS.Application.Dto.Missions;
+using CRMCQRS.Application.Notification;
+using CRMCQRS.Application.Validators.Missions;
 using CRMCQRS.Domain;
 using CRMCQRS.Domain.Common.Enums;
 using Microsoft.AspNetCore.Components;
@@ -29,17 +31,12 @@ public partial class CreateTaskDialog
     private IEnumerable<string> _selectedTags { get; set; } = new HashSet<string>();
 
     [Parameter]
-    public MissionModel _model { get; set; } = new();
+    public CreateMissionDto _model { get; set; } = new();
 
-    private MissionModelFluentValidator _missionModelValidator = new();
+    private CreateMissionDtoValidator _validator = new();
 
     protected override async Task OnInitializedAsync()
     {
-        if (_model.Tags != null && _model.Tags.Count > 0)
-        {
-            _selectedTags =
-                new HashSet<string>(_model.TagNames.Split(",", StringSplitOptions.RemoveEmptyEntries).ToList());
-        }
     }
 
     void Cancel() => _mudDialog.Cancel();

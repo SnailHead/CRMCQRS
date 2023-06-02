@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CRMCQRS.Application.Common.Mappings;
 using CRMCQRS.Application.Missions.Commands.CreateMission;
+using CRMCQRS.Application.Tags.Queries;
 using CRMCQRS.Domain.Common.Enums;
 
 namespace CRMCQRS.Application.Dto.Missions;
@@ -15,6 +16,7 @@ public class CreateMissionDto : IMapWith<CreateMissionCommand>
     public string? Description { get; set; }
     public MissionStatus Status { get; set; }
     public MissionPriority MissionPriority { get; set; }
+    public List<TagViewModel> Tags { get; set; }
 
     public void Mapping(Profile profile)
     {

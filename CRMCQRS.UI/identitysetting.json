@@ -1,0 +1,42 @@
+{
+  "IdentityServerUrl": {
+    "Authority": "https://localhost:20001"
+  },
+  
+  "CurrentIdentityClient": {
+    "Name" : "Microservice.Identity",
+    "Id" : "Microservice.Identity-ID",
+    "Secret": "Microservice.Identity-SECRET",
+    "ConsentType" : "implicit",
+    "GrandTypes": [
+      "refresh_token",
+      "authorization_code",
+      "client_credentials",
+      "password"
+    ],
+    "Scopes": [
+      "Microservice.Profile",
+      "profile",
+      "openid",
+      "offline_access"
+    ]
+  },
+  "Scopes": [
+    {
+      "Name": "Microservice.Profile",
+      "Description": "Microservice Profile API"
+    },
+    {
+      "Name": "openid",
+      "Description": "standart openid scope"
+    },
+    {
+      "Name": "offline_access",
+      "Description": "standart offline_access scope"
+    },
+    {
+      "Name": "profile",
+      "Description": "standart profile scope"
+    }
+  ]
+}

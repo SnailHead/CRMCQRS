@@ -31,9 +31,6 @@ namespace CRMCQRS.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool>("IsVisible")
                         .HasColumnType("bit");
 
@@ -49,9 +46,6 @@ namespace CRMCQRS.Infrastructure.Migrations
                     b.Property<Guid?>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -66,34 +60,6 @@ namespace CRMCQRS.Infrastructure.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("Missions");
-                });
-
-            modelBuilder.Entity("CRMCQRS.Domain.OfficeTimer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Report")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("OfficeTimers");
                 });
 
             modelBuilder.Entity("CRMCQRS.Domain.OpenIddictApplication", b =>
@@ -386,6 +352,28 @@ namespace CRMCQRS.Infrastructure.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
+            modelBuilder.Entity("CRMCQRS.Domain.Sprint", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Sprints");
+                });
+
             modelBuilder.Entity("CRMCQRS.Domain.Tag", b =>
                 {
                     b.Property<Guid>("Id")
@@ -485,6 +473,9 @@ namespace CRMCQRS.Infrastructure.Migrations
 
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Salary")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -706,17 +697,6 @@ namespace CRMCQRS.Infrastructure.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("CRMCQRS.Domain.OfficeTimer", b =>
-                {
-                    b.HasOne("CRMCQRS.Domain.User", "User")
-                        .WithMany("OfficeTimers")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("CRMCQRS.Domain.OpenIddictAuthorization", b =>
                 {
                     b.HasOne("CRMCQRS.Domain.OpenIddictApplication", "Application")
@@ -758,6 +738,17 @@ namespace CRMCQRS.Infrastructure.Migrations
                     b.Navigation("Project");
 
                     b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("CRMCQRS.Domain.Sprint", b =>
+                {
+                    b.HasOne("CRMCQRS.Domain.Project", "Project")
+                        .WithMany("Sprints")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("CRMCQRS.Domain.UserMission", b =>
@@ -902,6 +893,8 @@ namespace CRMCQRS.Infrastructure.Migrations
                 {
                     b.Navigation("Missions");
 
+                    b.Navigation("Sprints");
+
                     b.Navigation("Tags");
 
                     b.Navigation("Users");
@@ -915,8 +908,6 @@ namespace CRMCQRS.Infrastructure.Migrations
             modelBuilder.Entity("CRMCQRS.Domain.User", b =>
                 {
                     b.Navigation("Missions");
-
-                    b.Navigation("OfficeTimers");
                 });
 #pragma warning restore 612, 618
         }

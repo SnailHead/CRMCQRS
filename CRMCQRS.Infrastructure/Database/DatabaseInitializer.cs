@@ -50,6 +50,7 @@ namespace CRMCQRS.Infrastructure.Database
                     ClientId = "CRMCQRS-Identity-ID",
                     ClientSecret = "CRMCQRS-Identity-SECRET",
                     DisplayName = "CRMCQRS-Identity",
+                    ConsentType = OpenIddictConstants.ConsentTypes.Implicit,
                     Permissions =
                     {
                         OpenIddictConstants.Permissions.Endpoints.Authorization,

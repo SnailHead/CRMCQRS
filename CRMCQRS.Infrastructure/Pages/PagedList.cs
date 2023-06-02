@@ -69,6 +69,11 @@ public class PagedList<T> : IPagedList<T>
     public bool HasPreviousPage => PageIndex - IndexFrom > 0;
     public bool HasNextPage => PageIndex - IndexFrom + 1 < TotalPages;
 
+    public PagedList()
+    {
+        Items = Array.Empty<T>();
+        PageIndex = 1;
+    }
     internal PagedList(IEnumerable<T> source, int pageIndex, int pageSize, int indexFrom)
     {
         if (indexFrom > pageIndex)
@@ -101,5 +106,5 @@ public class PagedList<T> : IPagedList<T>
         }
     }
 
-    internal PagedList() => Items = Array.Empty<T>();
+    
 }

@@ -121,7 +121,7 @@
   ],
 
   "IdentityServerUrl": {
-    "Authority": "https://localhost:10001"
+    "Authority": "https://localhost:20001"
   }
   
 }

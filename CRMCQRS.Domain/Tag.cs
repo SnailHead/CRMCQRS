@@ -7,6 +7,8 @@ public class Tag
     public Tag()
     {
         IsVisible = true;
+        Projects = new();
+        Missions = new();
     }
     public Guid Id { get; set; }
     public string Title { get; set; }

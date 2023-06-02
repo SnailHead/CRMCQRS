@@ -21,9 +21,9 @@ public class DefaultDbContext : IdentityDbContext<
 
     public virtual DbSet<Project> Projects { get; set; }
     public virtual DbSet<Mission> Missions { get; set; }
-    public virtual DbSet<OfficeTimer> OfficeTimers { get; set; }
     public virtual DbSet<ProjectTag> ProjectTag { get; set; }
     public virtual DbSet<Tag> Tags { get; set; }
+    public virtual DbSet<Sprint> Sprints { get; set; }
     public virtual DbSet<Permission> Permissions { get; set; }
     public virtual DbSet<OpenIddictApplication> OpenIddictApplications { get; set; }
     public virtual DbSet<OpenIddictAuthorization> OpenIddictAuthorizations { get; set; }

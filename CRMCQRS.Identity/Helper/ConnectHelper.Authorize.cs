@@ -110,7 +110,7 @@ public static partial class ConnectHelper
             // Never add the "secret_value" claim to access or identity tokens.
             // In this case, it will only be added to authorization codes,
             // refresh tokens and user/device codes, that are always encrypted.
-            "secret_value" => Array.Empty<string>(),
+            //"secret_value" => Array.Empty<string>(),
 
             // Otherwise, add the claim to the access tokens only.
             _ => new[] { OpenIddictConstants.Destinations.AccessToken }

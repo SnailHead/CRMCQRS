@@ -10,16 +10,16 @@
                 <MudItem md="12" sm="12" xs="12">
                     <MudTextField @bind-Value="_model.Info" For="@(() => _model.Info)" Immediate="true" Lines="5"/>
                 </MudItem>
-                <MudItem md="12" sm="12" xs="12">
-                    <MudSelect T="string" @bind-SelectedValues="_selectedTags" @bind-Value="_model.TagIds" For="@(() => _model.TagIds)" MultiSelection="true" Variant="Variant.Outlined">
+                @*<MudItem md="12" sm="12" xs="12">
+                    <MudSelect T="Guid" @bind-SelectedValues="_selectedTags" @bind-Value="_model.TagIds" For="@(() => _model.TagIds)" MultiSelection="true" Variant="Variant.Outlined">
                         @foreach (var value in _tags)
                         {
-                            <MudSelectItem T="string" Value="value.Title">
+                            <MudSelectItem T="Guid" Value="value.Title">
                                 <MudChip Class="ma-2" Style="@($"color: ${value.Color}")" Variant="@(value.IsFilled ? Variant.Filled : Variant.Outlined)">@value.Title</MudChip>
                             </MudSelectItem>
                         }
                     </MudSelect>
-                </MudItem>
+                </MudItem>*@
                 <MudItem Class="d-flex flex-grow-1 gap-4 justify-center" md="12" sm="12" xs="12">
 
                 </MudItem>

@@ -2,6 +2,13 @@
 
 public class Project
 {
+    public Project()
+    {
+        Users = new();
+        Tags = new();
+        Missions = new();
+        Sprints = new();
+    }
     public Guid Id { get; set; }
     public string Title { get; set; }
     public DateTime CreationDate { get; set; }
@@ -10,5 +17,6 @@ public class Project
     public List<UserProjects> Users { get; set; }
     public List<ProjectTag> Tags { get; set; } 
     public List<Mission> Missions { get; set; } 
+    public List<Sprint> Sprints { get; set; } 
 
 }
