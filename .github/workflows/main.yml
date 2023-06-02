@@ -35,6 +35,19 @@ jobs:
                         "ASPNETCORE_ENVIRONMENT=Release"
                     build-args: |
                         build_mode=Release
+                        
+            -   name: "Build&Deploy oauth"
+                uses: docker/build-push-action@v2
+                with:
+                    context: .
+                    file: ./CRMCQRS.Identity/Dockerfile
+                    push: true
+                    tags: |
+                        ghcr.io/snailhead/oauth:latest
+                    secrets: |
+                        "ASPNETCORE_ENVIRONMENT=Release"
+                    build-args: |
+                        build_mode=Release
 
             -   name: "Run deploy on server"
                 uses: appleboy/ssh-action@master
