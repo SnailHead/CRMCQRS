@@ -1,7 +1,4 @@
-﻿using CRMCQRS.Domain;
-using CRMCQRS.Infrastructure.Pages;
-using CRMCQRS.Infrastructure.Repository;
-using CRMCQRS.Infrastructure.UnitOfWork;
+﻿using CRMCQRS.Infrastructure.Pages;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 

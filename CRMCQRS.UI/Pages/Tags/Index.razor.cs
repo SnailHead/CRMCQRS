@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Json;
-using CRMCQRS.Application.Dto.Tags;
+﻿using CRMCQRS.Application.Dto.Tags;
 using CRMCQRS.Application.Notification;
 using CRMCQRS.Application.Tags.Queries;
 using CRMCQRS.Infrastructure.Pages;

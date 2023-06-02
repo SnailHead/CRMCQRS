@@ -1,7 +1,5 @@
-﻿using System.Net.Http.Json;
-using CRMCQRS.Application.Notification;
+﻿using CRMCQRS.Application.Notification;
 using CRMCQRS.Application.Projects.Queries;
-using CRMCQRS.Application.Validators.Projects;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 

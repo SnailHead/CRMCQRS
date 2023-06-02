@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Json;
-using CRMCQRS.Application.Dto.Users;
+﻿using CRMCQRS.Application.Dto.Users;
 using CRMCQRS.Application.Validators.Users;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;

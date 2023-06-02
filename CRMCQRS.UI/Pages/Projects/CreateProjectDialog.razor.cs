@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Json;
-using CRMCQRS.Application.Dto.Projects;
+﻿using CRMCQRS.Application.Dto.Projects;
 using CRMCQRS.Application.Notification;
 using CRMCQRS.Application.Tags.Queries;
 using CRMCQRS.Application.Validators.Projects;

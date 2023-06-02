@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Json;
-using CRMCQRS.Application.Dto.Tags;
+﻿using CRMCQRS.Application.Dto.Tags;
 using CRMCQRS.Application.Notification;
 using CRMCQRS.Application.Validators.Tags;
 using CRMCQRS.Domain;
