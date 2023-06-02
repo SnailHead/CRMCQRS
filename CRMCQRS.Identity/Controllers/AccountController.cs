@@ -66,14 +66,14 @@ public class AccountController : BaseController
 
     [ProducesResponseType(200)]
     [ProducesResponseType(401)]
-    [HttpPost]
+    [HttpGet]
     [Route("singin")]
-    public async Task<IActionResult> Login([FromBody] LoginDto request,
+    public async Task<IActionResult> Login(string email, string password, string redirectUrl,
         [FromServices] UserManager<User> userManager,
         [FromServices] SignInManager<User> signInManager,
         [FromServices] IAccountService accountService)
     {
-        var user = await userManager.FindByEmailAsync(request.Email);
+        var user = await userManager.FindByEmailAsync(email);
         if (user is null)
         {
             return NotFound();
@@ -81,12 +81,12 @@ public class AccountController : BaseController
 
         await signInManager.SignInAsync(user, true);
 
-        var signInResult = await signInManager.PasswordSignInAsync(user, request.Password, true, false);
+        var signInResult = await signInManager.PasswordSignInAsync(user, password, true, false);
         if (signInResult.Succeeded)
         {
             var principal = await accountService.GetPrincipalByIdAsync(user.Id.ToString());
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-            return Ok();
+            return Redirect(redirectUrl);
         }
         return Forbid();
     }

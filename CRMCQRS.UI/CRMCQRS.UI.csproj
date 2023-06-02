@@ -18,4 +18,41 @@
       <ProjectReference Include="..\CRMCQRS.Infrastructure\CRMCQRS.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Pages\Tasks\**" />
+      <Compile Remove="Pages\Users\**" />
+      <Compile Remove="Pages\Projects\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Pages\Tasks\**" />
+      <EmbeddedResource Remove="Pages\Users\**" />
+      <EmbeddedResource Remove="Pages\Projects\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Pages\Tasks\**" />
+      <None Remove="Pages\Users\**" />
+      <None Remove="Pages\Projects\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Pages\Tasks\**" />
+      <Content Remove="Pages\Users\**" />
+      <Content Remove="Pages\Projects\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Tasks\CreateTaskDialog.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Tasks\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Tasks\View.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Users\CreateUserDialog.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Users\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Users\Login.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Users\Update.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Projects\CreateProjectDialog.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Projects\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Projects\Update.razor" />
+    </ItemGroup>
+
 </Project>
