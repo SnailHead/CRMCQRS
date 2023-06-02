@@ -8,7 +8,7 @@ WORKDIR /src
 COPY ["CRMCQRS.Identity/CRMCQRS.Identity.csproj", "CRMCQRS.Identity/"]
 RUN dotnet restore "CRMCQRS.Identity/CRMCQRS.Identity.csproj"
 COPY . .
-WORKDIR "/src/CRMCQRS.API"
+WORKDIR "/src/CRMCQRS.Identity"
 RUN dotnet build "CRMCQRS.Identity.csproj" -c Release -o /app/build
 
 FROM build AS publish
