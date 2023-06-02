@@ -74,7 +74,7 @@ public static partial class ConnectHelper
         IOpenIddictScopeManager scopeManager,
         IAccountService accountService)
     {
-        var user = await userManager.FindByNameAsync(request.Username);
+        var user = await userManager.FindByEmailAsync(request.Username);
 
         var properties = await CheckUser(user, request, userManager, signInManager);
         if (properties is not null)
@@ -87,9 +87,7 @@ public static partial class ConnectHelper
         {
             await userManager.ResetAccessFailedCountAsync(user);
         }
-        var authenticateResult = await httpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
-        var claimsPrincipal = authenticateResult.Principal;
-        //var claimsPrincipal = await CreatePasswordClaimsPrincipal(request, accountService, user, scopeManager);
+        var claimsPrincipal = await CreatePasswordClaimsPrincipal(request, accountService, user, scopeManager);
 
         return Results.SignIn(claimsPrincipal, new AuthenticationProperties(), OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
     }

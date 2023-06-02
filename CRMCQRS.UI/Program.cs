@@ -1,6 +1,8 @@
+using Blazored.LocalStorage;
 using CRMCQRS.Domain;
 using CRMCQRS.Infrastructure.Database;
 using CRMCQRS.UI;
+using CRMCQRS.UI.Application;
 using CRMCQRS.UI.BuilderExtensions;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,7 +16,9 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
 
 builder.Services.ConfigureAuthorizationServices();
-builder.Services.ConfigureOpenIddictServices();
+builder.Services.AddAuthorizationCore();
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped(sp =>

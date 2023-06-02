@@ -1,31 +1,113 @@
-﻿@inherits LayoutComponentBase
-
-<Main>
-    <Article>
-        @Body
-    </Article>
-</Main>
-
+﻿@using Blazored.LocalStorage
+@using MudBlazor
+@using MudBlazor.Utilities
+@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
-@inject IHttpContextAccessor Accessor
 @inject AuthenticationStateProvider AuthState
-@code{ 
+@inject ILocalStorageService LocalStorage
 
-    private bool _isAuthenticated = false;
-    [CascadingParameter] protected Task<AuthenticationState> AuthStat { get; set; }
+<PageTitle>CRM</PageTitle>
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+<MudLayout Class="min-vh-100">
+    <MudAppBar Class="" Color="Color.Primary" Fixed="false">
+        <MudIconButton Color="Color.Inherit" Edge="Edge.Start" Icon="@Icons.Material.Filled.Menu" OnClick="@ToggleDrawer"/>
+        <MudSpacer/>
+        <MudButton Class="m-3 p-3" OnClick="() => _isDarkMode = !_isDarkMode">
+            <MudIcon Color="@(_isDarkMode ? Color.Dark : Color.Info)" Icon="@Icons.Material.Filled.WbSunny"/>
+        </MudButton>
+        @if (_isAuthenticated)
+        {
+            <MudButton Color="Color.Info" OnClick="@(async () => await Logout())">
+                <MudText>Выйти</MudText>
+            </MudButton>
+        }
+    </MudAppBar>
+    <MudDrawerContainer Class="mud-height-full">
+        @if (_isAuthenticated)
+        {
+            <MudDrawer @bind-Open="@_open" Elevation="1" Variant="@DrawerVariant.Mini">
+                <MudNavMenu Class="pt-2">
+                    <MudNavLink Href="/home" Icon="@Icons.Material.Filled.Home">
+                        <MudText>Главная</MudText>
+                    </MudNavLink>
+                    <MudNavLink Href="/users" Icon="@Icons.Material.Filled.People">
+                        <MudText>Пользователи</MudText>
+                    </MudNavLink>
+                    <MudNavLink Href="/tasks" Icon="@Icons.Material.Filled.TaskAlt">
+                        <MudText>Задачи</MudText>
+                    </MudNavLink>
+                    <MudNavLink Href="/projects" Icon="@Icons.Material.Filled.AppRegistration">
+                        <MudText>Проекты</MudText>
+                    </MudNavLink>
+                    <MudNavLink Href="/tags" Icon="@Icons.Material.Filled.Label">
+                        <MudText>Теги</MudText>
+                    </MudNavLink>
+                    <MudNavLink Href="/reports" Icon="@Icons.Material.Filled.Dashboard">
+                        <MudText>Отчёт</MudText>
+                    </MudNavLink>
+                </MudNavMenu>
+            </MudDrawer>
+        }
 
-    protected async override Task OnInitializedAsync()
+    </MudDrawerContainer>
+
+    <MudMainContent Class="d-flex flex-column pt-0">
+        <MudContainer Class="flex-grow-1 flex-shrink-0" MaxWidth="MaxWidth.Large">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code
+{
+    private MudTheme _theme = new()
     {
-        var _authState = await AuthStat;
-        var _user = _authState.User;
-        var a =Accessor.HttpContext.User.Identity.IsAuthenticated;
+        Palette = new Palette()
+        {
+            Primary = Colors.Blue.Lighten1,
+            Secondary = Colors.Blue.Darken4,
+            Tertiary = Colors.Blue.Default,
+            TextPrimary = new MudColor("#000"),
+            DrawerIcon = Colors.Blue.Lighten1,
+            DrawerText = Colors.Blue.Lighten1,
+        },
+        PaletteDark = new PaletteDark()
+        {
+            Primary = Colors.Blue.Darken4,
+            Secondary = Colors.Blue.Lighten1,
+            Tertiary = Colors.Blue.Default,
+        }
+    };
+
+    private bool _isDarkMode;
+    private bool _isAuthenticated = false;
+    private string? _userName = null;
+    private bool _open = false;
+
+
+    protected override async Task OnInitializedAsync()
+    {
         var authState = await AuthState.GetAuthenticationStateAsync();
         _isAuthenticated = authState.User.Identity.IsAuthenticated;
         var user = authState.User;
         string? name = user.Identity.Name;
-        if (!_isAuthenticated)
+        if (!_isAuthenticated && !NavigationManager.Uri.Contains("account/login"))
         {
-            NavigationManager.NavigateTo($"https://localhost:20001/api/connect/authorize?client_id=CRMCQRS-Identity-ID&redirect_uri=https%3A%2F%2Flocalhost%3A5001&scope=openid&response_type=code&response_mode=query&state=2z2zny1as0f&nonce=tcb8f587ed");
+            NavigationManager.NavigateTo($"account/login");
         }
+    }
+
+    void ToggleDrawer()
+    {
+        _open = !_open;
+    }
+
+    async Task Logout()
+    {
+        await LocalStorage.RemoveItemAsync("token");
+        await AuthState.GetAuthenticationStateAsync();
+        NavigationManager.NavigateTo("account/login");
     }
 }

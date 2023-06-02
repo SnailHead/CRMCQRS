@@ -2,6 +2,7 @@ using System.Reflection;
 using CRMCQRS.Application.Common.Mappings;
 using CRMCQRS.Infrastructure.Database;
 using CRMCQRS.Infrastructure.UnitOfWork;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,14 +15,26 @@ builder.Services.AddControllers();
 builder.Services.AddAutoMapper(config =>
 {
     config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
-    config.AddProfile(new AssemblyMappingProfile(typeof(DefaultDbContext).Assembly));
+    config.AddProfile(new AssemblyMappingProfile(typeof(CRMCQRS.Application.Common.Filtration.ExpressionBuilder).Assembly));
 });
 builder.Services.AddDbContext<DefaultDbContext>(option => option.UseSqlServer(connectionString));
 builder.Services.AddUnitOfWork<DefaultDbContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
-builder.Services.AddAuthentication().AddCookie();
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    //options.Audience = builder.Configuration.GetValue<string>("IdentityServerUrl:Audience");
+    options.Authority = builder.Configuration.GetValue<string>("IdentityServerUrl:Authority");
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters.ClockSkew = TimeSpan.FromHours(4);
+    options.TokenValidationParameters.ValidateAudience = false;
+});
 
 var app = builder.Build();
 

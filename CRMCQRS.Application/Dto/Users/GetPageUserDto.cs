@@ -6,6 +6,7 @@ namespace CRMCQRS.Application.Dto.Users;
 
 public class GetPageUserDto : IMapWith<GetPageUserQuery>
 {
+    public GetPageUserDto(){}
     public GetPageUserDto(string name, int page)
     {
         Name = name;

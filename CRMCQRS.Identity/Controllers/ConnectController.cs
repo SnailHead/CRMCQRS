@@ -1,5 +1,4 @@
 ﻿using CRMCQRS.Domain;
-using CRMCQRS.Identity.Application.Dto;
 using CRMCQRS.Identity.Application.Services;
 using CRMCQRS.Identity.Helper;
 using Microsoft.AspNetCore;
@@ -21,7 +20,6 @@ public class ConnectController : BaseController
     [Consumes("application/x-www-form-urlencoded")]
     [Route("token")]
     public async Task<IResult> Token(
-        [FromForm] TokenDto request,
         [FromServices] IOpenIddictScopeManager manager,
         [FromServices] UserManager<User> userManager,
         [FromServices] SignInManager<User> signInManager,

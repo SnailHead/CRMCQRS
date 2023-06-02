@@ -6,6 +6,7 @@ namespace CRMCQRS.Application.Tags.Queries;
 
 public class TagViewModel : IMapWith<Tag>
 {
+    public TagViewModel(){}
     public TagViewModel(Guid id, string title, string color, bool isFilled)
     {
         Id = id;

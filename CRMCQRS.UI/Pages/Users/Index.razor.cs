@@ -1,4 +1,5 @@
-﻿using CRMCQRS.Application.Dto.Tags;
+﻿using Blazored.LocalStorage;
+using CRMCQRS.Application.Dto.Tags;
 using CRMCQRS.Application.Dto.Users;
 using CRMCQRS.Application.Notification;
 using CRMCQRS.Application.Tags.Queries;
@@ -7,6 +8,7 @@ using CRMCQRS.Domain;
 using CRMCQRS.Infrastructure.Pages;
 using CRMCQRS.Infrastructure.Repository;
 using CRMCQRS.Infrastructure.UnitOfWork;
+using CRMCQRS.UI.Application;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -23,6 +25,8 @@ public partial class Index
     private ISnackbar _snackbar { get; set; }
 
     [Inject]
+    private ILocalStorageService _localStorage { get; set; }
+    [Inject]
     private IDialogService _dialogService { get; set; }
 
     private PagedList<UserViewModel> _pagedList { get; set; } = new();
@@ -32,7 +36,7 @@ public partial class Index
 
     protected override async Task OnInitializedAsync()
     {
-        
+        await _httpClient.SetBearerAuth(_localStorage);
         await GetUsers();
     }
 

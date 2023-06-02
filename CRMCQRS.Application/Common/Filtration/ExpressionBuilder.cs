@@ -2,8 +2,9 @@
 
 namespace CRMCQRS.Application.Common.Filtration;
 
-public static class ExpressionBuilder
+public class ExpressionBuilder
 {
+    public ExpressionBuilder(){}
     public static Expression<Func<T, bool>> CompareExpression<T>(Expression<Func<T, bool>> firstExp, Expression<Func<T, bool>> secondExp) where T : class
     {
         var visitor = new ParameterUpdateVisitor(firstExp.Parameters.First(), secondExp.Parameters.First());

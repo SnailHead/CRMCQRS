@@ -21,22 +21,4 @@
       "offline_access"
     ]
   },
-  "Scopes": [
-    {
-      "Name": "Microservice.Profile",
-      "Description": "Microservice Profile API"
-    },
-    {
-      "Name": "openid",
-      "Description": "standart openid scope"
-    },
-    {
-      "Name": "offline_access",
-      "Description": "standart offline_access scope"
-    },
-    {
-      "Name": "profile",
-      "Description": "standart profile scope"
-    }
-  ]
 }

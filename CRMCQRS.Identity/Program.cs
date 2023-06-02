@@ -1,5 +1,4 @@
 using CRMCQRS.Identity.BuilderExtensions;
-using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureBaseServices();
@@ -12,7 +11,6 @@ builder.Services.ConfigureOpenIddictServices();
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddMudServices();
 
 var app = builder.Build();
 
@@ -32,8 +30,5 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
 
 app.Run();

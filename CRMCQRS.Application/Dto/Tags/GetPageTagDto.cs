@@ -6,6 +6,7 @@ namespace CRMCQRS.Application.Dto.Tags;
 
 public class GetPageTagDto : IMapWith<GetPageTagQuery>
 {
+    public GetPageTagDto(){}
     public GetPageTagDto(string title, int page)
     {
         Title = title;

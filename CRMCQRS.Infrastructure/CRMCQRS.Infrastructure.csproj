@@ -25,8 +25,4 @@
         <ProjectReference Include="..\CRMCQRS.Domain\CRMCQRS.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Authentication" />
-    </ItemGroup>
-
 </Project>
