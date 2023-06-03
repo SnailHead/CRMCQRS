@@ -15,9 +15,11 @@ public class CreateUserCommand : IRequest<Guid>, IMapWith<User>
     public long TelegramChatId { get; set; }
     public string Password { get; set; }
     public string Email { get; set; }
-    
+
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<CreateUserCommand, User>();
+        profile.CreateMap<CreateUserCommand, User>()
+            .ForMember(m => m.NormalizedEmail, o => o.MapFrom(x => x.Email.ToUpper()))
+            .ForMember(m => m.EmailConfirmed, o => o.MapFrom(x => true));
     }
 }

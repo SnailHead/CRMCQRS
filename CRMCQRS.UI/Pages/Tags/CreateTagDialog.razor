@@ -6,13 +6,13 @@
         <DialogContent>
             <MudGrid>
                 <MudItem md="12" sm="12" xs="12">
-                    <MudTextField @bind-Value="_model.Title" For="@(() => _model.Title)" Immediate="true"/>
+                    <MudTextField @bind-Value="_model.Title" For="@(() => _model.Title)" Label="Название" Immediate="true"/>
                 </MudItem>
                 <MudItem md="12" sm="12" xs="12">
 
                 </MudItem>
                 <MudItem md="12" sm="12" xs="12">
-                    <MudSwitch @bind-Checked="@_model.IsFilled" For="@(() => _model.IsFilled)"/>
+                    <MudSwitch @bind-Checked="@_model.IsFilled" For="@(() => _model.IsFilled)" Label="Заливка"/>
                 </MudItem>
                 <MudItem Class="d-flex flex-grow-1 gap-4 justify-center" md="12" sm="12" xs="12">
                     <MudColorPicker ColorPickerMode="ColorPickerMode.HEX" ColorPickerView="ColorPickerView.Palette" DisableAlpha="true" DisableInputs="true" PickerVariant="PickerVariant.Static" ValueChanged="OnChangeColorPicker"/>

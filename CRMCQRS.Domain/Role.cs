@@ -5,6 +5,8 @@ namespace CRMCQRS.Domain;
 public class Role: IdentityRole<Guid>
 {
     public bool IsVisible { get; set; } = true;
+    public List<User> Users { get; set; }
+
 
     public Role() : base()
     {

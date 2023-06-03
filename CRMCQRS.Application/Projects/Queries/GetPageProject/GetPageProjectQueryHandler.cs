@@ -28,7 +28,7 @@ public class GetPageProjectQueryHandler : IRequestHandler<GetPageProjectQuery, I
     {
         var projects =
             await _projectRepository.GetPagedListAsync(predicate: request.GetExpression(request),
-                pageIndex: request.Page,
+                pageIndex: request.Page - 1,
                 disableTracking: true, cancellationToken: cancellationToken,
                 include: item => item.Include(x => x.Tags).ThenInclude(x => x.Tag)
                     .Include(x => x.Missions),

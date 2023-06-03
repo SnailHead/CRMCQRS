@@ -8,19 +8,19 @@
 
                 <MudGrid>
                     <MudItem md="12" sm="12" xs="12">
-                        <MudTextField @bind-Value="_model.Title" For="@(() => _model.Title)" Immediate="true"/>
+                        <MudTextField @bind-Value="_model.Title" For="@(() => _model.Title)" Immediate="true" Label="Название"/>
                     </MudItem>
                     <MudItem md="12" sm="12" xs="12">
-                        <MudTextField @bind-Value="_model.Description" For="@(() => _model.Description)" Immediate="true" Lines="5"/>
+                        <MudTextField @bind-Value="_model.Description" For="@(() => _model.Description)" Immediate="true" Label="Описание" Lines="5"/>
                     </MudItem>
                     <MudItem md="12" sm="12" xs="12">
-                        <MudTextField @bind-Value="_model.StartDate" For="@(() => _model.StartDate)" Format="yyyy-MM-dd" Immediate="true" InputType="InputType.Date"/>
+                        <MudTextField @bind-Value="_model.StartDate" For="@(() => _model.StartDate)" Format="yyyy-MM-dd" Immediate="true" InputType="InputType.Date" Label="Дата начала"/>
                     </MudItem>
                     <MudItem md="12" sm="12" xs="12">
-                        <MudTextField @bind-Value="_model.EndDate" For="@(() => _model.EndDate)" Format="yyyy-MM-dd" Immediate="true" InputType="InputType.Date"/>
+                        <MudTextField @bind-Value="_model.EndDate" For="@(() => _model.EndDate)" Format="yyyy-MM-dd" Immediate="true" InputType="InputType.Date" Label="Дата сдачи"/>
                     </MudItem>
                     <MudItem md="12" sm="12" xs="12">
-                        <MudSelect @bind-Value="_model.ProjectId" For="@(() => _model.ProjectId)" Variant="Variant.Outlined">
+                        <MudSelect @bind-Value="_model.ProjectId" For="@(() => _model.ProjectId)" Label="Проект" Variant="Variant.Outlined">
                             @foreach (var item in _projects)
                             {
                                 <MudSelectItem T="Guid?" Value="Guid.Parse(item.Value)">
@@ -30,7 +30,7 @@
                         </MudSelect>
                     </MudItem>
                     <MudItem md="12" sm="12" xs="12">
-                        <MudSelect @bind-Value="_model.MissionPriority" For="@(() => _model.MissionPriority)" Variant="Variant.Outlined">
+                        <MudSelect @bind-Value="_model.MissionPriority" For="@(() => _model.MissionPriority)" Label="Приоритет" Variant="Variant.Outlined">
                             @foreach (var item in _missionPriority)
                             {
                                 <MudSelectItem Value="item">

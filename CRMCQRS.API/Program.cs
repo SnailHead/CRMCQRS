@@ -1,5 +1,6 @@
 using System.Reflection;
 using CRMCQRS.Application.Common.Mappings;
+using CRMCQRS.Domain;
 using CRMCQRS.Infrastructure.Database;
 using CRMCQRS.Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

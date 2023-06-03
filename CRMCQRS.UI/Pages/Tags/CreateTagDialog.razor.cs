@@ -1,8 +1,10 @@
-﻿using CRMCQRS.Application.Dto.Tags;
+﻿using Blazored.LocalStorage;
+using CRMCQRS.Application.Dto.Tags;
 using CRMCQRS.Application.Notification;
 using CRMCQRS.Application.Validators.Tags;
 using CRMCQRS.Domain;
 using CRMCQRS.Infrastructure.Repository;
+using CRMCQRS.UI.Application;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Utilities;
@@ -12,6 +14,8 @@ namespace CRMCQRS.UI.Pages.Tags;
 
 public partial class CreateTagDialog
 {
+    [Inject]
+    private ILocalStorageService _localStorage { get; set; }
     [Inject]
     private NavigationManager _navigationManager { get; set; }
 
@@ -29,15 +33,16 @@ public partial class CreateTagDialog
     [Parameter]
     public CreateTagDto _model { get; set; } = new CreateTagDto();
 
-    private List<int> _colors { get; set; } = typeof(Color).GetEnumValues().Cast<int>().ToList();
+    private List<string> _colors { get; set; } = typeof(Color).GetProperties().Select(item => item.Name).ToList();
     private CreateTagDtoValidator _validator = new ();
-
-    private IRepository<Tag> _tagRepository { get; set; }
+    
 
     private void Cancel() => _mudDialog.Cancel();
 
     protected override async Task OnInitializedAsync()
     {
+        await _httpClient.SetBearerAuth(_localStorage);
+
     }
 
     private async Task Submit()

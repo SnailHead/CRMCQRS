@@ -1,7 +1,9 @@
-﻿using CRMCQRS.Application.Dto.Projects;
+﻿using Blazored.LocalStorage;
+using CRMCQRS.Application.Dto.Projects;
 using CRMCQRS.Application.Notification;
 using CRMCQRS.Application.Projects.Queries;
 using CRMCQRS.Infrastructure.Pages;
+using CRMCQRS.UI.Application;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -18,13 +20,17 @@ public partial class Index
     [Inject]
     private IDialogService _dialogService { get; set; }
     [Inject]
+    private ILocalStorageService _localStorage { get; set; }
+    [Inject]
     private HttpClient _httpClient { get; set; }
 
-    private IPagedList<ProjectViewModel> _pagedList { get; set; }
+    private PagedList<ProjectViewModel> _pagedList { get; set; } = new();
     private MudForm _form;
 
     protected override async Task OnInitializedAsync()
     {
+        await _httpClient.SetBearerAuth(_localStorage);
+
         await GetProjects();
     }
 
@@ -42,7 +48,7 @@ public partial class Index
             _snackbar.Add(NotificationMessages.ErrorFromGet, Severity.Error);
             return;
         }
-        _pagedList = await response.Content.ReadFromJsonAsync<IPagedList<ProjectViewModel>>();
+        _pagedList = await response.Content.ReadFromJsonAsync<PagedList<ProjectViewModel>>();
     }
 
     private void OpenDialog()

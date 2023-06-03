@@ -9,6 +9,7 @@ public class User : IdentityUser<Guid>
     public User()
     {
         Permissions = new List<Permission>();
+        Roles = new();
     }
     public bool IsBlocked { get; set; }
 
@@ -28,9 +29,7 @@ public class User : IdentityUser<Guid>
     public bool IsOnline { get; set; }
     public bool IsVisible { get; set; }
     public decimal Salary { get; set; }
-    /// <summary>
-    /// Application permission for policy-based authorization
-    /// </summary>
+    public List<Role> Roles { get; set; }
     public List<Permission>? Permissions { get; set; }
     public ICollection<UserMission> Missions { get; set; }
 }

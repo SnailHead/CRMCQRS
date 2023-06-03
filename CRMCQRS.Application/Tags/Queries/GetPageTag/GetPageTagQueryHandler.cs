@@ -26,7 +26,7 @@ public class GetPageTagQueryHandler : IRequestHandler<GetPageTagQuery, IPagedLis
         CancellationToken cancellationToken)
     {
         var tags =
-            await _tagRepository.GetPagedListAsync(predicate: request.GetExpression(request), pageIndex: request.Page,
+            await _tagRepository.GetPagedListAsync(predicate: request.GetExpression(request), pageIndex: request.Page - 1,
                 disableTracking: true, cancellationToken: cancellationToken, 
                 selector: item => _mapper.Map<TagViewModel>(item));
 

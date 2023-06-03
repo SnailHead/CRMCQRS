@@ -1,7 +1,9 @@
-﻿using CRMCQRS.Application.Dto.Projects;
+﻿using Blazored.LocalStorage;
+using CRMCQRS.Application.Dto.Projects;
 using CRMCQRS.Application.Notification;
 using CRMCQRS.Application.Tags.Queries;
 using CRMCQRS.Application.Validators.Projects;
+using CRMCQRS.UI.Application;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -15,13 +17,15 @@ public partial class CreateProjectDialog
     private ISnackbar _snackbar { get; set; }
     [Inject]
     private HttpClient _httpClient { get; set; }
+    [Inject]
+    private ILocalStorageService _localStorage { get; set; }
 
     [CascadingParameter]
     private MudDialogInstance _mudDialog { get; set; }
 
     private MudForm _form;
     private List<TagViewModel> _tags { get; set; } = new();
-    private IEnumerable<string> _selectedTags { get; set; } = new HashSet<string>();
+    private List<Guid> _selectedTags { get; set; } = new List<Guid>();
 
     [Parameter]
     public CreateProjectDto _model { get; set; } = new();
@@ -30,11 +34,13 @@ public partial class CreateProjectDialog
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await _httpClient.GetAsync("tags/get-select");
-        if (!response.IsSuccessStatusCode)
+        await _httpClient.SetBearerAuth(_localStorage);
+
+        var response = await _httpClient.GetAsync("tags/get-for-select");
+        if (response.IsSuccessStatusCode)
         {
+            _tags = await response.Content.ReadFromJsonAsync<List<TagViewModel>>();
         }
-        _tags = await response.Content.ReadFromJsonAsync<List<TagViewModel>>();
 
     }
 
@@ -56,6 +62,11 @@ public partial class CreateProjectDialog
             return;
         }
         _snackbar.Add(NotificationMessages.SuccessCreate, Severity.Success);
-        _navigationManager.NavigateTo("tags", true);
+        _navigationManager.NavigateTo("projects", true);
+    }
+
+    private void SelectItem(IEnumerable<string> list)
+    {
+        _model.TagIds = _tags.Where(item => list.Contains(item.Title)).Select(item => item.Id).ToList();
     }
 }

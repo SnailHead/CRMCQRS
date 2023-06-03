@@ -1,7 +1,9 @@
-﻿using CRMCQRS.Application.Dto.Tags;
+﻿using Blazored.LocalStorage;
+using CRMCQRS.Application.Dto.Tags;
 using CRMCQRS.Application.Notification;
 using CRMCQRS.Application.Tags.Queries;
 using CRMCQRS.Infrastructure.Pages;
+using CRMCQRS.UI.Application;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -9,6 +11,8 @@ namespace CRMCQRS.UI.Pages.Tags;
 
 public partial class Index
 {
+    [Inject]
+    private ILocalStorageService _localStorage { get; set; }
     [Inject]
     private NavigationManager _navigationManager { get; set; }
 
@@ -21,11 +25,13 @@ public partial class Index
     [Inject]
     private IDialogService _dialogService { get; set; }
 
-    private IPagedList<TagViewModel> _pagedList { get; set; }
+    private PagedList<TagViewModel> _pagedList { get; set; } = new();
     private MudForm _form;
 
     protected override async Task OnInitializedAsync()
     {
+        await _httpClient.SetBearerAuth(_localStorage);
+
         await GetTags();
     }
 
@@ -46,7 +52,7 @@ public partial class Index
             _snackbar.Add(NotificationMessages.ErrorFromGet, Severity.Error);
             return;
         }
-        _pagedList = await response.Content.ReadFromJsonAsync<IPagedList<TagViewModel>>();
+        _pagedList = await response.Content.ReadFromJsonAsync<PagedList<TagViewModel>>();
     }
 
     private async Task DeleteTag(Guid id)

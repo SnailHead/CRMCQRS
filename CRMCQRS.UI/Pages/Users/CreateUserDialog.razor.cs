@@ -1,5 +1,7 @@
-﻿using CRMCQRS.Application.Dto.Users;
+﻿using Blazored.LocalStorage;
+using CRMCQRS.Application.Dto.Users;
 using CRMCQRS.Application.Validators.Users;
+using CRMCQRS.UI.Application;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -9,6 +11,8 @@ public partial class CreateUserDialog
 {
     [Inject]
     private NavigationManager _navigationManager { get; set; }
+    [Inject]
+    private ILocalStorageService _localStorage { get; set; }
 
     [Inject]
     private ISnackbar _snackbar { get; set; }
@@ -27,6 +31,7 @@ public partial class CreateUserDialog
 
     protected override async Task OnInitializedAsync()
     {
+        await _httpClient.SetBearerAuth(_localStorage);
     }
     void Cancel() => _mudDialog.Cancel();
 
