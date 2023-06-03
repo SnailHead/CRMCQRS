@@ -17,6 +17,8 @@ public partial class CreateUserDialog
     private HttpClient _httpClient { get; set; }
 
     private MudForm _form;
+    [CascadingParameter]
+    private MudDialogInstance _mudDialog { get; set; }
 
     [Parameter]
     public CreateUserDto Model { get; set; } = new();
@@ -26,6 +28,7 @@ public partial class CreateUserDialog
     protected override async Task OnInitializedAsync()
     {
     }
+    void Cancel() => _mudDialog.Cancel();
 
     private async Task Submit()
     {
@@ -33,14 +36,14 @@ public partial class CreateUserDialog
 
         if (_form.IsValid)
         {
-            var response = await _httpClient.PostAsJsonAsync("users/update", Model);
+            var response = await _httpClient.PostAsJsonAsync("users/create", Model);
             if (response.IsSuccessStatusCode)
             {
-                _snackbar.Add("Данные сохранены", Severity.Success);
+                _snackbar.Add("Данные сохранены", Severity.Success, options => options.CloseAfterNavigation = false);
             }
             else
             {
-                _snackbar.Add("При сохранение возникла ошибка", Severity.Error);
+                _snackbar.Add("При сохранение возникла ошибка", Severity.Error, options => options.CloseAfterNavigation = false);
             }
 
             _navigationManager.NavigateTo("users", true);

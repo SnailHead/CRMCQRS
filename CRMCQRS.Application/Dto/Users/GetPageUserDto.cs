@@ -6,14 +6,17 @@ namespace CRMCQRS.Application.Dto.Users;
 
 public class GetPageUserDto : IMapWith<GetPageUserQuery>
 {
-    public GetPageUserDto(){}
-    public GetPageUserDto(string name, int page)
+    public GetPageUserDto()
     {
-        Name = name;
+        Page = 1;
+    }
+    public GetPageUserDto(string query, int page)
+    {
+        Query = query;
         Page = page;
     }
 
-    public string Name { get; set; }
+    public string? Query { get; set; }
     public int Page { get; set; }
     public void Mapping(Profile profile)
     {

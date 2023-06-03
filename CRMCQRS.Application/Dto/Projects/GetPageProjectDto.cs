@@ -6,6 +6,7 @@ namespace CRMCQRS.Application.Dto.Projects;
 
 public class GetPageProjectDto : IMapWith<GetPageProjectQuery>
 {
+    public GetPageProjectDto(){}
     public GetPageProjectDto(string title, int page)
     {
         Title = title;

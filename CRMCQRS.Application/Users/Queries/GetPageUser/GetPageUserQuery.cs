@@ -8,7 +8,7 @@ namespace CRMCQRS.Application.Users.Queries.GetPageUser;
 
 public class GetPageUserQuery : IRequest<IPagedList<UserViewModel>>, IFilterModel<GetPageUserQuery, User>
 {
-    public string Query { get; set; }
+    public string? Query { get; set; }
     public int Page { get; set; }
 
     public Expression<Func<User, bool>> GetExpression(GetPageUserQuery filterModel)
@@ -17,10 +17,10 @@ public class GetPageUserQuery : IRequest<IPagedList<UserViewModel>>, IFilterMode
         if (!string.IsNullOrEmpty(filterModel.Query))
         {
             Expression<Func<User, bool>> exp = c =>
-                c.Firstname.Contains(filterModel.Query.ToLower(), StringComparison.OrdinalIgnoreCase) ||
-                c.Lastname.Contains(filterModel.Query.ToLower(), StringComparison.OrdinalIgnoreCase) ||
+                c.Firstname.ToLower().Contains(filterModel.Query.ToLower()) ||
+                c.Lastname.ToLower().Contains(filterModel.Query.ToLower()) ||
                 (c.Middlename != null &&
-                 c.Middlename.Contains(filterModel.Query.ToLower(), StringComparison.OrdinalIgnoreCase)
+                 c.Middlename.ToLower().Contains(filterModel.Query.ToLower())
                 );
             globalExpression = ExpressionBuilder.CompareExpression(globalExpression, exp);
         }

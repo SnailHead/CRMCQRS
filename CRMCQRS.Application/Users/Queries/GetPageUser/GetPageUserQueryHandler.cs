@@ -26,7 +26,7 @@ public class GetPageUserQueryHandler : IRequestHandler<GetPageUserQuery, IPagedL
         CancellationToken cancellationToken)
     {
         var users =
-            await _userRepository.GetPagedListAsync(predicate: request.GetExpression(request), pageIndex: request.Page,
+            await _userRepository.GetPagedListAsync(predicate: request.GetExpression(request), pageIndex: request.Page - 1,
                 disableTracking: true, cancellationToken: cancellationToken, 
                 selector: item => _mapper.Map<UserViewModel>(item));
 

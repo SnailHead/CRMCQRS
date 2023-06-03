@@ -28,13 +28,13 @@ public partial class Login
     private AuthenticationStateProvider _authState { get; set; }
     [Inject]
     private ISnackbar _snackbar { get; set; }
+    [Inject]
+    private IConfiguration _configuration { get; set; }
 
     private LoginDtoValidator _validator = new();
 
     private MudForm Form;
     private LoginDto _model { get; set; } = new();
-    [Inject]
-    private IHttpContextAccessor _httpContextAccessor { get; set; }
 
     private async Task Submit()
     {
@@ -48,7 +48,9 @@ public partial class Login
             new KeyValuePair<string, string>("username", _model.Email),
             new KeyValuePair<string, string>("password", _model.Password),
         };
-        var response = await new HttpClient().PostAsync("https://localhost:20001/api/connect/token", new FormUrlEncodedContent(data));
+        string domain = _configuration.GetValue<string>("IdentityUrl") ??
+                        throw new ArgumentNullException("IdentityUrl", "Parameter IdentityUrl is null");
+        var response = await new HttpClient().PostAsync(domain+"connect/token", new FormUrlEncodedContent(data));
         if (!response.IsSuccessStatusCode)
         {
             _snackbar.Add(NotificationMessages.FormValidationFail, Severity.Error);

@@ -1,13 +1,8 @@
 ﻿using Blazored.LocalStorage;
-using CRMCQRS.Application.Dto.Tags;
 using CRMCQRS.Application.Dto.Users;
 using CRMCQRS.Application.Notification;
-using CRMCQRS.Application.Tags.Queries;
 using CRMCQRS.Application.Users.Queries;
-using CRMCQRS.Domain;
 using CRMCQRS.Infrastructure.Pages;
-using CRMCQRS.Infrastructure.Repository;
-using CRMCQRS.Infrastructure.UnitOfWork;
 using CRMCQRS.UI.Application;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -30,6 +25,7 @@ public partial class Index
     private IDialogService _dialogService { get; set; }
 
     private PagedList<UserViewModel> _pagedList { get; set; } = new();
+    private GetPageUserDto _getPageUserDto { get; set; } = new();
 
     private MudForm _form;
 
@@ -43,13 +39,14 @@ public partial class Index
     private async Task SelectedPage(int page)
     {
         _pagedList.PageIndex = page;
+        _getPageUserDto.Page = page;
         await GetUsers();
     }
 
     private async Task GetUsers()
     {
         var response = await _httpClient.PostAsJsonAsync("users/GetPage", 
-                new GetPageUserDto("", _pagedList.PageIndex));
+            _getPageUserDto);
         
         if (!response.IsSuccessStatusCode)
         {
@@ -72,6 +69,7 @@ public partial class Index
 
     private async Task ClearFilter()
     {
+        _getPageUserDto = new GetPageUserDto();
         await GetUsers();
     }
 }

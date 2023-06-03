@@ -1,29 +1,27 @@
 ﻿@page "/users"
-@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components
 @using MudBlazor
 @using CRMCQRS.Infrastructure.Authentication.Policies
 @attribute [Authorize(Policy = $"{Policy.Developer},{Policy.Admin},{Policy.DepartmentHead}")]
 
-<MudPaper Elevation="25">
-    <MudToolBar>
-        
-        <MudSpacer/>
-        <MudIconButton Icon="@Icons.Material.Outlined.Add"/>
-    </MudToolBar>
-</MudPaper>
 <PageTitle>Пользователи</PageTitle>
 <MudText Align="Align.Center" Class="m-2" Typo="Typo.h5">Пользователи</MudText>
-<MudItem Class="align-items-end d-flex flex-column m-2">
-    <MudButton Color="Color.Primary" OnClick="OpenDialog" Variant="Variant.Filled">Добавить</MudButton>
-</MudItem>
+<MudPaper Elevation="25">
+    <MudToolBar>
+        <MudTextField Class="mt-0 mb-1" Label="Поиск" @bind-Value="_getPageUserDto.Query" Clearable="true" For="@(() => _getPageUserDto.Query)" Immediate="true" OnClearButtonClick="ClearFilter"/>
 
-@*<MudExpansionPanels>
+        <MudIconButton Icon="@Icons.Material.Outlined.Search" OnClick="GetUsers"/>
+        <MudSpacer/>
+        <MudIconButton Icon="@Icons.Material.Outlined.Add" OnClick="OpenDialog"/>
+    </MudToolBar>
+</MudPaper>
+
+<MudExpansionPanels>
     <MudExpansionPanel MaxHeight="150" Text="Параметры поиска">
-        <MudForm Model="@_filterModel" @ref="@_form">
+        <MudForm Model="@_getPageUserDto" @ref="@_form">
             <MudGrid>
                 <MudItem md="6" sm="12" xs="12">
-                    <MudTextField @bind-Value="_filterModel.SearchQuery" For="@(() => _filterModel.SearchQuery)" Immediate="true"/>
+                    <MudTextField @bind-Value="_getPageUserDto.Query" Clearable="true" For="@(() => _getPageUserDto.Query)" Immediate="true" OnClearButtonClick="ClearFilter"/>
                 </MudItem>
                 <MudItem Class="d-flex flex-grow-1 gap-4 justify-center" md="12" sm="12" xs="12">
                     <MudButton Class="ml-auto" Color="Color.Primary" OnClick="GetUsers" Variant="Variant.Filled">Поиск</MudButton>
@@ -32,7 +30,7 @@
             </MudGrid>
         </MudForm>
     </MudExpansionPanel>
-</MudExpansionPanels>*@
+</MudExpansionPanels>
 
 @if (_pagedList.TotalPages > 1)
 {
@@ -41,12 +39,11 @@
     </MudItem>
 }
 
-
 <MudGrid Class="pt-5">
     @foreach (var item in _pagedList.Items)
     {
         <MudItem md="4" sm="12" xs="12">
-            <MudLink Href="@($"users/{item.Id}")" Underline="Underline.None">
+            <MudLink Href="@($"users/detail/{item.Id}")" Underline="Underline.None">
                 <MudPaper Class="ma-2" Elevation="3">
                     <MudGrid>
                         <MudItem Class="pa-0" md="3" sm="3" xs="3">

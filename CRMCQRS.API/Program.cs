@@ -21,7 +21,11 @@ builder.Services.AddDbContext<DefaultDbContext>(option => option.UseSqlServer(co
 builder.Services.AddUnitOfWork<DefaultDbContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssemblyContaining<Program>();
+    cfg.RegisterServicesFromAssemblyContaining<CRMCQRS.Application.Users.Queries.GetPageUser.GetPageUserQuery>();
+});
 builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;

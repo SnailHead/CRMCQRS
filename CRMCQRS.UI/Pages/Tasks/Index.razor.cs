@@ -16,7 +16,7 @@ public partial class Index
     [Inject]
     private IDialogService _dialogService { get; set; }
 
-    private IPagedList<MissionViewModel> _pagedList { get; set; }
+    private PagedList<MissionViewModel> _pagedList { get; set; } = new();
     private MudForm _form;
 
     protected override async Task OnInitializedAsync()

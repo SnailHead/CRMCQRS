@@ -25,7 +25,7 @@ builder.Services.AddScoped(sp =>
     new HttpClient
     {
         BaseAddress = new Uri(builder.Configuration.GetValue<string>("ApiUrl")
-                              ?? throw new ArgumentNullException("ApiUrl", "Configuration parameter ApiUrl is null"))
+                              ?? throw new ArgumentNullException("ApiUrl", "Configuration parameter ApiUrl is null")),
     });
 
 
