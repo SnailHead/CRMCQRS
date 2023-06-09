@@ -78,10 +78,10 @@ public static class BuilderSwagger
 
     public static void ConfigureSwaggerApplication(this WebApplication app)
     {
-        if (!app.Environment.IsDevelopment())
+        /*if (!app.Environment.IsDevelopment())
         {
             return;
-        }
+        }*/
             
         using var scope = app.Services.CreateAsyncScope();
         var url = scope.ServiceProvider.GetService<IOptions<IdentityAddressOption>>()!.Value.Authority;
