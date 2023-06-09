@@ -23,7 +23,6 @@ public class DefaultDbContext : IdentityDbContext<
     public virtual DbSet<Mission> Missions { get; set; }
     public virtual DbSet<ProjectTag> ProjectTag { get; set; }
     public virtual DbSet<Tag> Tags { get; set; }
-    public virtual DbSet<Sprint> Sprints { get; set; }
     public virtual DbSet<Permission> Permissions { get; set; }
     public virtual DbSet<OpenIddictApplication> OpenIddictApplications { get; set; }
     public virtual DbSet<OpenIddictAuthorization> OpenIddictAuthorizations { get; set; }
@@ -48,6 +47,7 @@ public class DefaultDbContext : IdentityDbContext<
             Guid>();
         base.OnModelCreating(builder);
         builder.ApplyConfiguration(new ProjectTagConfiguration());
+        builder.ApplyConfiguration(new UserConfiguration());
     }
     
 }

@@ -28,8 +28,15 @@ namespace CRMCQRS.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("AuthorId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ExecutorId")
+                        .IsRequired()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsVisible")
                         .HasColumnType("bit");
@@ -43,8 +50,14 @@ namespace CRMCQRS.Infrastructure.Migrations
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("PeriodExecution")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid?>("ProjectId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -53,7 +66,14 @@ namespace CRMCQRS.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("ExecutorId");
 
                     b.HasIndex("MissionId");
 
@@ -352,28 +372,6 @@ namespace CRMCQRS.Infrastructure.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("CRMCQRS.Domain.Sprint", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("Sprints");
-                });
-
             modelBuilder.Entity("CRMCQRS.Domain.Tag", b =>
                 {
                     b.Property<Guid>("Id")
@@ -501,30 +499,6 @@ namespace CRMCQRS.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("CRMCQRS.Domain.UserMission", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("MissionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("RoleInMission")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MissionId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserMission");
                 });
 
             modelBuilder.Entity("CRMCQRS.Domain.UserProjects", b =>
@@ -684,8 +658,33 @@ namespace CRMCQRS.Infrastructure.Migrations
                     b.ToTable("PermissionUser");
                 });
 
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.Property<Guid>("RolesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UsersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("RolesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("RoleUser");
+                });
+
             modelBuilder.Entity("CRMCQRS.Domain.Mission", b =>
                 {
+                    b.HasOne("CRMCQRS.Domain.User", "Author")
+                        .WithMany("AuthorMissions")
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("CRMCQRS.Domain.User", "Executor")
+                        .WithMany("ExecutorMissions")
+                        .HasForeignKey("ExecutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CRMCQRS.Domain.Mission", null)
                         .WithMany("SubMissions")
                         .HasForeignKey("MissionId");
@@ -693,6 +692,10 @@ namespace CRMCQRS.Infrastructure.Migrations
                     b.HasOne("CRMCQRS.Domain.Project", "Project")
                         .WithMany("Missions")
                         .HasForeignKey("ProjectId");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Executor");
 
                     b.Navigation("Project");
                 });
@@ -738,36 +741,6 @@ namespace CRMCQRS.Infrastructure.Migrations
                     b.Navigation("Project");
 
                     b.Navigation("Tag");
-                });
-
-            modelBuilder.Entity("CRMCQRS.Domain.Sprint", b =>
-                {
-                    b.HasOne("CRMCQRS.Domain.Project", "Project")
-                        .WithMany("Sprints")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("CRMCQRS.Domain.UserMission", b =>
-                {
-                    b.HasOne("CRMCQRS.Domain.Mission", "Mission")
-                        .WithMany("UserMissions")
-                        .HasForeignKey("MissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CRMCQRS.Domain.User", "User")
-                        .WithMany("Missions")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Mission");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CRMCQRS.Domain.UserProjects", b =>
@@ -870,11 +843,24 @@ namespace CRMCQRS.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.HasOne("CRMCQRS.Domain.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CRMCQRS.Domain.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CRMCQRS.Domain.Mission", b =>
                 {
                     b.Navigation("SubMissions");
-
-                    b.Navigation("UserMissions");
                 });
 
             modelBuilder.Entity("CRMCQRS.Domain.OpenIddictApplication", b =>
@@ -893,8 +879,6 @@ namespace CRMCQRS.Infrastructure.Migrations
                 {
                     b.Navigation("Missions");
 
-                    b.Navigation("Sprints");
-
                     b.Navigation("Tags");
 
                     b.Navigation("Users");
@@ -907,7 +891,9 @@ namespace CRMCQRS.Infrastructure.Migrations
 
             modelBuilder.Entity("CRMCQRS.Domain.User", b =>
                 {
-                    b.Navigation("Missions");
+                    b.Navigation("AuthorMissions");
+
+                    b.Navigation("ExecutorMissions");
                 });
 #pragma warning restore 612, 618
         }

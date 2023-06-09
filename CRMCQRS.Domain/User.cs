@@ -31,5 +31,6 @@ public class User : IdentityUser<Guid>
     public decimal Salary { get; set; }
     public List<Role> Roles { get; set; }
     public List<Permission>? Permissions { get; set; }
-    public ICollection<UserMission> Missions { get; set; }
+    public ICollection<Mission> AuthorMissions { get; set; }
+    public ICollection<Mission> ExecutorMissions { get; set; }
 }
