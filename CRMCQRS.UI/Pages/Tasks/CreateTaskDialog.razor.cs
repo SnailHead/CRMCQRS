@@ -1,8 +1,10 @@
-﻿using CRMCQRS.Application.Dto.Missions;
+﻿using Blazored.LocalStorage;
+using CRMCQRS.Application.Dto.Missions;
 using CRMCQRS.Application.Notification;
 using CRMCQRS.Application.Validators.Missions;
 using CRMCQRS.Domain;
 using CRMCQRS.Domain.Common.Enums;
+using CRMCQRS.UI.Application;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MudBlazor;
@@ -11,6 +13,10 @@ namespace CRMCQRS.UI.Pages.Tasks;
 
 public partial class CreateTaskDialog
 {
+    [Inject]
+    private ILocalStorageService _localStorage { get; set; }
+    [Inject]
+    private HttpClient _httpClient { get; set; }
     [Inject]
     private NavigationManager _navigationManager { get; set; }
 
@@ -37,6 +43,9 @@ public partial class CreateTaskDialog
 
     protected override async Task OnInitializedAsync()
     {
+        await _httpClient.SetBearerAuth(_localStorage);
+        var response = await _httpClient.GetAsync("");
+
     }
 
     void Cancel() => _mudDialog.Cancel();

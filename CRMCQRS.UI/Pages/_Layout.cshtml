@@ -33,14 +33,6 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
 <script src="_content/MudBlazor/MudBlazor.min.js"></script>
-<script>@*todo domain*@
-        window.CookieFunction = {
-            acceptMessage: function (value) {
-                const date = new Date()
-                document.cookie = `access_token=${value}; path=/; expires=${date.setDate(date.getDate() + 1)}`;
-            }
-        };    
-   </script>
- @RenderSection("Scripts", required: false)
+@RenderSection("Scripts", required: false)
 </body>
 </html>

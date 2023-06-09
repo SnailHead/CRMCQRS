@@ -31,6 +31,10 @@ services:
         hostname: mssql
         environment:
             SA_PASSWORD: "Pass123!"
-        restart: unless-stopped
+        restart: always
         ports:
-            - "11433:1433"
+            - "1433:1433"
+        volumes:
+            - /root/crm/mssql/data:/var/opt/mssql/data
+            - /root/crm/mssql/log:/var/opt/mssql/log
+            - /root/crm/mssql/secrets:/var/opt/mssql/secrets
